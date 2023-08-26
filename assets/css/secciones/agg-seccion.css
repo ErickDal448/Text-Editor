@@ -1,0 +1,4 @@
+.plantilla__agregar{
+    display: flex; /* flex / none */
+    justify-content: flex-start;
+}

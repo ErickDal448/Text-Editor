@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Editar-Plantilla</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <link rel="stylesheet" href="./assets/css/global.css">
+        <link rel="stylesheet" href="./assets/css/EditarPlantilla.css">
+        <link rel="stylesheet" href="./assets/css/secciones/texto.css">
+        <link rel="stylesheet" href="./assets/css/secciones/pregunta-abierta.css">
+        <link rel="stylesheet" href="./assets/css/secciones/pregunta-multiple.css">
+        <link rel="stylesheet" href="./assets/css/secciones/tabla.css">
+        <link rel="stylesheet" href="./assets/css/secciones/agg-seccion.css">
+        <link rel="stylesheet" href="./assets/css/EditorTexto/editor.css">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+        <link rel="stylesheet" type="text/css" href="./assets/css/EditorTexto/sheets-of-paper-a4.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    </head>
+    <body>
+        
+        <section class="editar__section">
+            <div class="editar__Espaciado col-4"></div>
+            <section class="editar__menuizq ">
+                <img src="./assets/img/🦆 icon _menu_.png" alt="toggle-menu" class="editar__menuicons">
+                <div class="editar__menuicons__bloque div__MenuIzqBloque">
+                    <a href="./index.html" class="editar__returnhome">
+                        <img src="./assets/img/icon _home.png" alt="return-home" class="editar__menuicons editar__menuicons__bloque">
+                    </a>
+                    <p class="editar__menunombre__bloque">HOME</p>
+                </div>
+                <input type="file" id="upload" hidden/>
+                <div class="editar__menuiconos__plantillas">
+                    <p class="editar__menusecciones">Edición de texto</p>
+                    <button id="paleta" class="jscolor {valueElement:null, value:'3c8dbc'}"></button>
+
+                    <select type="text" id="inputFontSize" onchange="alterFont(this.value)" >
+                        <option value="2">10 pt</option>
+                        <option value="3">12 pt</option>
+                        <option value="4">14 pt</option>
+                        <option value="6">16 pt</option>
+                        <option value="7">18 pt</option>
+                    </select>
+                    <button class="btnJustifyLeft BtnTextEditor" onclick="applyCommand('justifyLeft')"><i class="bi bi-text-left"></i></button>
+                    <button class="btnCenter BtnTextEditor" onclick="applyCommand('justifyCenter')"><i class="bi bi-text-center"></i></button>
+                    <button class="btnJustifyRight BtnTextEditor" onclick="applyCommand('justifyRight')" ><i class="bi bi-text-right"></i></button>
+                    <button class="btnJustify BtnTextEditor" onclick="applyCommand('justifyFull')" ><i class="bi bi-justify"></i></button>
+
+                    <button class="btnBold BtnTextEditor" onclick="applyCommand('bold')"><i class="bi bi-type-bold"></i></button>
+                    <button class="btnItalic BtnTextEditor" onclick="applyCommand('italic')"><i class="bi bi-type-italic"></i></button>
+                    <button class="btnStrike BtnTextEditor" onclick="applyCommand('strikeThrough')"><i class="bi bi-type-strikethrough"></i></button>
+                    <button class="btnUnderline BtnTextEditor" onclick="applyCommand('underline')"><i class="bi bi-type-underline"></i></button>
+
+                    <button class="btnOutdent BtnTextEditor" onclick="applyCommand('outdent')"><i class="bi bi-text-indent-left"></i></button>
+                    <button class="btnIndent BtnTextEditor" onclick="applyCommand('indent')"><i class="bi bi-text-indent-right"></i></button>
+                    
+                    <button class="btnLink BtnTextEditor" onclick="link()"><i class="bi bi-link-45deg"  ></i></button>
+                    <button class="btnRedo BtnTextEditor" onclick="applyCommand('redo')"><i class="bi bi-arrow-clockwise" ></i></button>
+                    <button class="btnUndo BtnTextEditor" onclick="applyCommand('undo')"><i class="bi bi-arrow-counterclockwise"></i></button>
+                    <label for="upload"><i class="bi bi-image"></i></label>
+    
+                    <i class="bi bi-table"></i>
+
+                    <button id="fontColor" class="btnFontColor BtnTextEditor"><i class="bi bi-fonts" ></i></button>
+                    <button id="backColor" class="btnBackColor BtnTextEditor"><i class="bi bi-brush" ></i></button>
+                    
+                </div>
+
+                <div class="menu__agregarplantilla">
+                    <p class="menu__agregarplantillatxt menu__agglateraltxt"> Agregar sección</p>
+                    <img src="./assets/img/Agg-Plantilla-menu.png" alt="agregar bloque" class="menu__agregarplantillaimg menu__agglateral">
+                </div>
+            </section>
+
+            <section class="editar__plantilla__section col-8">
+                <h5 class="editar__titulo">Título</h5>
+                    <!-- Seccion de agregar seccion -->
+                    <div class="menu__agregarplantilla plantilla__agregar">
+                        <section class="document">  
+                            <div id="editor" class="page" contenteditable="true">
+                                <p>Hola mundo!!</p>
+                            </div>
+                        </section>
+                    </div>
+            </section>
+        </section>
+
+        </section>
+        <script src="./js/Editar Plantilla/left-menu.js"></script>
+        <script src="./js/Editar Plantilla/poppers.js"></script>
+        <script src="./js/Editar Plantilla/EditorTexto/editor.js"></script>
+        <script src="./js/Editar Plantilla/EditorTexto/pages.js"></script>
+        <script src="./js/Editar Plantilla/EditorTexto/jscolor.min.js"></script>
+    </body>
+</html>

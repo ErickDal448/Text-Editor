@@ -1,0 +1,52 @@
+.plantilla__texto{
+    display: block ;
+}
+
+.texto__titulo{
+    color: var(--background-objetos);
+}
+
+.texto__numparrafo{
+    color: var(--background-objetos);
+}
+
+.texto__fondoControles{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--background-config);
+    padding: 0 1rem;
+    border-radius: 15px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.btn__TextControler{
+    background-color: var(--btn-add);
+    display: flex;
+    margin: .5rem;
+    justify-content: center;
+    align-items: center;
+    height: 2.75rem;
+    padding: 1.25rem 1rem;
+}
+
+.btn__TextControler:hover{
+    background: #a0c280;
+}
+
+.texto__textareadiv{
+    display: flex;
+    justify-content: center;
+}
+
+.texto__caja{
+    width: 80%;
+    min-height: 50vh;
+    height: auto;
+    padding: 0.5rem;
+    border-radius: 15px;
+    background-color: var(--background-objetos);
+    box-shadow:  10px 15px 2px 1px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2.5rem;
+    margin-top: 2rem;
+}
