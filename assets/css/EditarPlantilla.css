@@ -18,7 +18,7 @@
     background: var(--background-menu);
     height: 100vh;
     padding: 1rem 1rem 0rem 1rem;
-    width: 15.3vw;
+    width: auto;
     border-radius: 0px 15px 15px 0px;
 }
 
@@ -35,9 +35,23 @@
     background-color: var( --background-editor);
 }
 
+.BtnToggleMenu{
+    font-size:25px;
+    font-weight: bold;
+    outline: none;
+    border:none;
+    cursor:pointer;
+    width:2.5rem;
+    height:2.5rem;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    background-color: var(--background-editor);
+}
+
 .editar__menuicons{
-    width: 2rem;
-    height: 2rem;
+    color: white;
 }
 
 .editar__menuicons:hover{
@@ -52,12 +66,10 @@
 
 .editar__menunombre__bloque{
     color: var(--background-objetos);
-    width: 100px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: 0;
-    margin-left: 10px;
 }
 
 .editar__titulo{
@@ -111,7 +123,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 6rem;
+    height: auto;
 }
 
 .menu__agregarplantillatxt{

@@ -21,6 +21,23 @@ function applyPageBreaks() {
 
             element.classList.add("has-events");
         }
+        element.addEventListener("keydown", function (event) {
+            if (event.key === "Backspace" && element.textContent.trim() === "") {
+                const previousPage = element.previousElementSibling;
+                console.log(previousPage);
+                if (previousPage) {
+                    const range = document.createRange();
+                    const selection = window.getSelection();
+                    range.selectNodeContents(previousPage);
+                    console.log(previousPage.textContent);
+                    range.collapse(false);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+
+                    element.remove();
+                }
+            }
+        });
     });
 }
 
@@ -38,7 +55,6 @@ function applyManualPageBreaks() {
             for (var s = snippets.length - 1; s >= 0; s--) {
                 if (snippets[s].classList.contains("page-break")) {
                     pages[p].insertAdjacentHTML("afterend", "<div class=\"page\" contenteditable=\"true\"></div>");
-
                     for (var n = snippets.length - 1; n > s; n--) {
                         pages[p].nextElementSibling.insertBefore(snippets[n], pages[p].nextElementSibling.firstChild);
                     }
@@ -68,7 +84,7 @@ function applyAutomaticPageBreaks(pixelsPerInch, pageHeightInCentimeter, pageMar
                 pages[p].insertAdjacentHTML("afterend", "<div class=\"page\" contenteditable=\"true\"></div>");
                 pageCoords = pages[p].getBoundingClientRect();
                 snippets = pages[p].querySelectorAll("h1, h2, h3, h4, h5, h6, p, ul, ol");
-
+                
                 for (var s = snippets.length - 1; s >= 0; s--) {
                     snippetCoords = snippets[s].getBoundingClientRect();
 
@@ -76,7 +92,6 @@ function applyAutomaticPageBreaks(pixelsPerInch, pageHeightInCentimeter, pageMar
                         pages[p].nextElementSibling.insertBefore(snippets[s], pages[p].nextElementSibling.firstChild);
                     }
                 }
-
                 pages = docs[d].querySelectorAll(".page");
             }
         }

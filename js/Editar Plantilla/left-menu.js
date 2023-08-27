@@ -8,11 +8,11 @@
     // Seleccionar el menu izquierdo 
     const menuizq = document.querySelector('.editar__menuizq');
 
-    // Seleccionar el icono de agregar seccion
-    const iconAgg = document.querySelector('.menu__agglateral');
-
     // Seleccionar el div de espaciado para el contenido de la plantilla
     const espaciado = document.querySelector('.editar__Espaciado');
+
+    // Seleccionar los select de los botones o sus contenedores 
+    const Contenedores = document.querySelectorAll(".SectionsBtns");
 
     // Crea una variable para llevar un registro de si los textos están visibles o no
     let textsVisible = true;
@@ -27,26 +27,41 @@
         textElements.forEach(element => {
         element.style.display = 'none';
         });
-        iconAgg.style.width = '2rem';
-        iconAgg.style.height = '2rem';
-        espaciado.style.width= '5vw';
-        menuizq.style.width = 'auto';
-        SpaceWork.style.width = '93vw';
+        Contenedores.forEach(element => {
+            element.style.flexDirection = 'column';
+        });
+        
+        espaciado.style.width = menuizq.offsetWidth + 'px';
         textsVisible = false;
     } 
     else { // Si los textos están ocultos, muéstralos
         textElements.forEach(element => {
         element.style.display = 'block';
         });
-        iconAgg.style.width = '5rem';
-        iconAgg.style.height = '5rem';
-        espaciado.style.width= '15vw';
-        menuizq.style.width = '15vw';
-        SpaceWork.style.width = '83vw';
+        Contenedores.forEach(element => {
+            element.style.flexDirection = 'row';
+        });
+        
+        espaciado.style.width = menuizq.offsetWidth + 'px';
         textsVisible = true;
     }
     });
 
 
 
+    const updateSpaceWorkWidth = () => {
+        espaciado.style.width = menuizq.offsetWidth + 'px';
+        const espaciadoWidth = espaciado.offsetWidth;
+        SpaceWork.style.width = `calc(98vw - ${espaciadoWidth}px)`;
+    }
+    
+    window.addEventListener('resize', updateSpaceWorkWidth);
+    menuIcon.addEventListener('click', () => {
+        // ...
+        updateSpaceWorkWidth();
+        // ...
+    });
 
+    window.addEventListener("DOMContentLoaded", function () {
+        updateSpaceWorkWidth();
+    });

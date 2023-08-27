@@ -1,37 +1,39 @@
 
-#editor {
-    padding: 10px;
-    height:350px;
-    overflow-y:auto;
-    overflow-x:hidden;
+.SectionsBtns{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    flex-direction: row;
+    align-items: center;
 }
 
 .BtnTextEditor{
-    font-size:15px;
+    font-size:25px;
     font-weight: bold;
     outline: none;
     border:none;
     cursor:pointer;
-    width:25px;
-    height:25px;
+    width:2.5rem;
+    height:2.5rem;
     border-radius:20px;
     display:flex;
     align-items:center;
     justify-content: center;
+    background-color: var(--btn-add);
 }
 #fontColor{
     color:#3c8dbc;
 }
 
-#backColor{
-    color:orange;
-}
-
 #paleta{
-    width:15px;
-    height:15px;
+    width:2.5rem;
+    height:2.5rem;
     border:none;
     outline:none;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border:3px solid var(--background-sistema);
 }
 
 .demo-icon{
@@ -44,10 +46,16 @@
 }
 
 #inputFontSize{
-    border:1px solid #ccc;
+    border:3px solid var(--background-sistema);
     outline:none;
-    border-radius:3px;
-    padding:2px;
+    border-radius:5px;
+    padding:5px;
     color:#3d3d3d;
-    font-size: 9px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+} 
+
+#inputFontSize option{
+    font-size: 1rem;
 }

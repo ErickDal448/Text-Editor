@@ -65,3 +65,14 @@ backColor.addEventListener("click", () => document.execCommand('backColor', fals
 const link = () => document.execCommand('createlink', false, prompt('Enter a URL:', 'http://') )
 const alterFont    = size => document.execCommand("fontSize", false, parseInt(size) )
 const applyCommand = comand => document.execCommand(comand)
+
+const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      if (mutation.attributeName === "style") {
+        const newBackgroundColor = paleta.style.backgroundColor;
+        fontColor.style.color = newBackgroundColor;
+      }
+    });
+  });
+  
+  observer.observe(paleta, { attributes: true });

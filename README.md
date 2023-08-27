@@ -1,6 +1,6 @@
-# **|Sistema De Plantillas|**
+# **|Editor de Textos|**
 ## Introducción: 
-Este sistema está hecho para poder crear y guardar plantillas de documentos PDF que contengan elementos como preguntas, textos, tablas, etc. 
+Este sistema está hecho para poder crear y guardar formatos de texto para llenar sus datos y luego imprimirlos.
 
 ## Funcionalidades:
 - **1: Visualizar plantillas.**
@@ -11,13 +11,21 @@ Este sistema está hecho para poder crear y guardar plantillas de documentos PDF
 - - **1.2: Editar plantilla creada.** Si seleccionas una plantilla previamente creada se abrirá el menú de edición de plantilla donde saldrán todos los aspectos que agregaste en la plantilla que seleccionaste.
 ---
 
-- **2: Edición de secciones.** Este apartado se encuentra en el menú izquierdo y se pueden agregar secciones, eliminarlas y editarlas.
+- **2: Edición de texto.** Este apartado se encuentra en el menú izquierdo y se puede editar el texto que se encuentra en las hojas de diferentes maneras. 
 ----
-- - **2.1: Agregar secciones.** Se Pueden agregar diferentes tipos de secciones como textos, preguntas abiertas, preguntas de opción múltiple y tablas. Dichas secciones se irán agregando en el menú izquierdo del sistema.
-- - **2.2: Eliminar secciones.** Se pueden eliminar las secciones arrastrándolas al icono de basura que se forma abajo del menú izquierdo, para posteriormente seleccionar si quiere eliminar ese elemento o no.
-- - **2.3: Editar secciones.** Al momento de darle click a tus secciones de lado izquierdo puedes editar dichas secciones donde su información se mostrara de lado derecho.
-- - **2.4: Mover secciones.** Se puede mover el orden de las secciones arrastrando los elementos de secciones que se tengan en el orden que se quiera formar.
+- - **2.1: Colores y tamaño.** Se pude cambiar el color para algunos de los siguientes parametros y cambiar el tamaño del texto.
+- - **2.2: Justificación.** Se pude justificar el texto de manera de izquierda, derecha, central y lineal.
+- - **2.3: Editor de texto en su estilo.** Se puede cambiar al estilo de texto en bold, italic, strike y con underline.
+- - **2.4: Espaciado.** Se puede realizar un outdent o un indent en el texto.
+- - **2.5: Cambiar colores del texto.** Se puede cambiar la forma del color del texto, de manera de cambiar su letra o cambiar su fondo.
+- - **2.6: regresar.** Se tiene la opción de regresar o avanzar en caso de error.
+- - **2.7: Incersión.** Se puede incertar diferentes cosas como un link, una imagen o un cuadro de texto.
 ---
+
+
+
+
+
 - **3: Formatos de tipos de secciones.** Cada tipo de sección tiene cierto formato el cual debe de ser editable para el usuario.
 ----
 - - **3.1: Tipo texto.**  En este formato lo que se puede editar es un textarea donde se debe de poner el texto sin límite de cuanto texto se pueda poner. Donde se puede poner títulos, texto en negrita y centrar el texto.

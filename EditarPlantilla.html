@@ -31,53 +31,73 @@
         <section class="editar__section">
             <div class="editar__Espaciado col-4"></div>
             <section class="editar__menuizq ">
-                <img src="./assets/img/🦆 icon _menu_.png" alt="toggle-menu" class="editar__menuicons">
+                <button class="BtnToggleMenu" ><i  alt="toggle-menu" class="editar__menuicons bi bi-list"></i></button>
+                
                 <div class="editar__menuicons__bloque div__MenuIzqBloque">
-                    <a href="./index.html" class="editar__returnhome">
-                        <img src="./assets/img/icon _home.png" alt="return-home" class="editar__menuicons editar__menuicons__bloque">
-                    </a>
+                    <button class="BtnToggleMenu" >
+                        <a href="./index.html" class="editar__returnhome">
+                            <i alt="return-home" class="editar__menuicons editar__menuicons__bloque bi bi-house"></i>
+                        </a>
+                    </button>
                     <p class="editar__menunombre__bloque">HOME</p>
                 </div>
                 <input type="file" id="upload" hidden/>
                 <div class="editar__menuiconos__plantillas">
                     <p class="editar__menusecciones">Edición de texto</p>
-                    <button id="paleta" class="jscolor {valueElement:null, value:'3c8dbc'}"></button>
+                    <section class="SectionsBtns">
+                        <button id="paleta" class="jscolor {valueElement:null, value:'3c8dbc'}"></button>
 
-                    <select type="text" id="inputFontSize" onchange="alterFont(this.value)" >
-                        <option value="2">10 pt</option>
-                        <option value="3">12 pt</option>
-                        <option value="4">14 pt</option>
-                        <option value="6">16 pt</option>
-                        <option value="7">18 pt</option>
-                    </select>
-                    <button class="btnJustifyLeft BtnTextEditor" onclick="applyCommand('justifyLeft')"><i class="bi bi-text-left"></i></button>
-                    <button class="btnCenter BtnTextEditor" onclick="applyCommand('justifyCenter')"><i class="bi bi-text-center"></i></button>
-                    <button class="btnJustifyRight BtnTextEditor" onclick="applyCommand('justifyRight')" ><i class="bi bi-text-right"></i></button>
-                    <button class="btnJustify BtnTextEditor" onclick="applyCommand('justifyFull')" ><i class="bi bi-justify"></i></button>
-
-                    <button class="btnBold BtnTextEditor" onclick="applyCommand('bold')"><i class="bi bi-type-bold"></i></button>
-                    <button class="btnItalic BtnTextEditor" onclick="applyCommand('italic')"><i class="bi bi-type-italic"></i></button>
-                    <button class="btnStrike BtnTextEditor" onclick="applyCommand('strikeThrough')"><i class="bi bi-type-strikethrough"></i></button>
-                    <button class="btnUnderline BtnTextEditor" onclick="applyCommand('underline')"><i class="bi bi-type-underline"></i></button>
-
-                    <button class="btnOutdent BtnTextEditor" onclick="applyCommand('outdent')"><i class="bi bi-text-indent-left"></i></button>
-                    <button class="btnIndent BtnTextEditor" onclick="applyCommand('indent')"><i class="bi bi-text-indent-right"></i></button>
+                        <select type="text" id="inputFontSize" onchange="alterFont(this.value)" >
+                            <option value="2">10 pt</option>
+                            <option value="3">12 pt</option>
+                            <option value="4">14 pt</option>
+                            <option value="6">16 pt</option>
+                            <option value="7">18 pt</option>
+                        </select>
+                    </section>
+                    <section class="SectionsBtns">
+                        <button class="btnJustifyLeft BtnTextEditor" onclick="applyCommand('justifyLeft')"><i class="bi bi-text-left"></i></button>
+                        <button class="btnCenter BtnTextEditor" onclick="applyCommand('justifyCenter')"><i class="bi bi-text-center"></i></button>
+                        <button class="btnJustifyRight BtnTextEditor" onclick="applyCommand('justifyRight')" ><i class="bi bi-text-right"></i></button>
+                        <button class="btnJustify BtnTextEditor" onclick="applyCommand('justifyFull')" ><i class="bi bi-justify"></i></button>
+                    </section>
                     
-                    <button class="btnLink BtnTextEditor" onclick="link()"><i class="bi bi-link-45deg"  ></i></button>
-                    <button class="btnRedo BtnTextEditor" onclick="applyCommand('redo')"><i class="bi bi-arrow-clockwise" ></i></button>
-                    <button class="btnUndo BtnTextEditor" onclick="applyCommand('undo')"><i class="bi bi-arrow-counterclockwise"></i></button>
-                    <label for="upload"><i class="bi bi-image"></i></label>
-    
-                    <i class="bi bi-table"></i>
+                    <section class="SectionsBtns">
+                        <button class="btnBold BtnTextEditor" onclick="applyCommand('bold')"><i class="bi bi-type-bold"></i></button>
+                        <button class="btnItalic BtnTextEditor" onclick="applyCommand('italic')"><i class="bi bi-type-italic"></i></button>
+                        <button class="btnStrike BtnTextEditor" onclick="applyCommand('strikeThrough')"><i class="bi bi-type-strikethrough"></i></button>
+                        <button class="btnUnderline BtnTextEditor" onclick="applyCommand('underline')"><i class="bi bi-type-underline"></i></button>
+                    </section>
 
-                    <button id="fontColor" class="btnFontColor BtnTextEditor"><i class="bi bi-fonts" ></i></button>
-                    <button id="backColor" class="btnBackColor BtnTextEditor"><i class="bi bi-brush" ></i></button>
+                    <section class="SectionsBtns">
+                        <button class="btnOutdent BtnTextEditor" onclick="applyCommand('outdent')"><i class="bi bi-text-indent-right"></i></button>
+                        <button class="btnIndent BtnTextEditor" onclick="applyCommand('indent')"><i class=" bi bi-text-indent-left"></i></button>    
+                    </section>
+                    
+                    <section class="SectionsBtns">
+                        <button id="fontColor" class="btnFontColor BtnTextEditor"><i class="bi bi-fonts" ></i></button>
+                        <button id="backColor" class="btnBackColor BtnTextEditor"><i class="bi bi-brush" ></i></button>
+                    </section>
+
+                    <p class="editar__menusecciones">Acciones e insertar</p>
+
+                    <section class="SectionsBtns">
+                        <button class="btnRedo BtnTextEditor" onclick="applyCommand('redo')"><i class="bi bi-arrow-clockwise" ></i></button>
+                        <button class="btnUndo BtnTextEditor" onclick="applyCommand('undo')"><i class="bi bi-arrow-counterclockwise"></i></button>
+                    </section>
+
+                    <section class="SectionsBtns">
+                        <button class="btnLink BtnTextEditor" onclick="link()"><i class="bi bi-link-45deg"  ></i></button>
+                        <label class="BtnTextEditor" for="upload"><i class="bi bi-image"></i></label>
+        
+                        <i class="bi bi-table BtnTextEditor"></i>
+                    </section>
+                    
+
                     
                 </div>
 
                 <div class="menu__agregarplantilla">
-                    <p class="menu__agregarplantillatxt menu__agglateraltxt"> Agregar sección</p>
-                    <img src="./assets/img/Agg-Plantilla-menu.png" alt="agregar bloque" class="menu__agregarplantillaimg menu__agglateral">
                 </div>
             </section>
 
