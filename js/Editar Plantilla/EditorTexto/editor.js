@@ -1,43 +1,8 @@
-const table      = document.querySelector(".bi-table")
 const editor     = document.querySelector("#editor")
 const paleta     = document.querySelector("#paleta")
 const fontColor  = document.querySelector("#fontColor")
 const backColor  = document.querySelector("#backColor")
 const upload     = document.querySelector("#upload")
-
-table.addEventListener("click", () => {
-    let linha = +prompt('Qual número de linhas?')
-    let coluna= +prompt('Qual número de colunas?')
-
-    if(linha && coluna)
-    {
-        let t    = document.createElement("table")
-        t.border = "1"
-        t.style.borderCollapse = "collapse"
-        t.style.border = "1px solid #ccc"
-	t.style.margin = "auto"
-
-        for( let l=0; l<linha; l++)
-        {
-            let tr   = document.createElement("tr")
-            tr.style.border = "1px solid #ccc"
-
-            for( let c=0; c<coluna; c++)
-            {
-                let td   = document.createElement("td")
-                td.style.border = "1px solid #ccc"
-                td.innerHTML = " - "
-                tr.appendChild(td)
-            }
-            t.appendChild(tr)
-        }
-        editor.appendChild(t)
-		
-		let small  = document.createElement("small")
-		small.innerHTML = "Fonte:"
-        editor.appendChild(small)
-    }
-})
 
 upload.addEventListener("change", e => {
     let file    = e.currentTarget.files[0]
