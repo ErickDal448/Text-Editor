@@ -18,38 +18,67 @@ var tblBody = document.createElement("tbody");
 // --------------------- //
 // CREAR TABLA PRINCIPAL //
 // --------------------- //
+// Obtener la referencia del elemento div
+var div = document.querySelector("#editor");
+
+// Almacenar la posición del cursor cuando el div pierde el foco
+var indice;
+div.addEventListener("input", () => {
+  // Obtener la selección actual
+  var sel = window.getSelection();
+
+  // Verificar si hay una selección
+  if (sel.rangeCount > 0) {
+    // Obtener el primer rango de la selección
+    var range = sel.getRangeAt(0);
+
+    // Crear un nuevo rango para medir la posición del cursor
+    var cursorRange = document.createRange();
+    cursorRange.selectNodeContents(div);
+    cursorRange.setEnd(range.startContainer, range.startOffset);
+
+    // Calcular la posición del cursor dentro del div
+    indice = cursorRange.toString().length;
+  }
+});
 BtnTable.addEventListener("click", () => {
-  columnas = +prompt('¿Cuántas columnas quieres?');
-  filas = +prompt('¿Cuántas filas quieres?');
+  let filas = +prompt('¿Cuántas filas?')
+  let columnas= +prompt('¿Cuántas columnas?')
 
- // Obtener la referencia del elemento div con la clase tabla__espaciotabla
- var div = document.querySelector("#editor");
+  if(filas && columnas)
+  {
+      let t    = document.createElement("table")
+      t.border = "1"
+      t.style.borderCollapse = "collapse"
+      t.style.border = "1px solid #ccc"
+      t.style.margin = "auto"
+      t.classList.add("table");
+      t.classList.add("tabla__tabla");
 
- // Crear un elemento table y un elemento tbody
- var tabla = document.createElement("table");
- tabla.classList.add("table"); // Agregar la clase table de Bootstrap
- tabla.classList.add("tabla__tabla"); // Agregar la clase tabla__tabla para editar
- 
+      for( let l=0; l<filas; l++)
+      {
+          let tr   = document.createElement("tr")
+          tr.style.border = "1px solid #ccc"
+          tr.style.width = "2rem"
 
- // Agregar una fila adicional al principio para mostrar las coordenadas de las columnas
- var hilera = document.createElement("tr");
- tblBody.appendChild(hilera);
+          for( let c=0; c<columnas; c++)
+          {
+              let td   = document.createElement("td")
+              td.style.border = "1px solid #ccc"
+              td.style.maxWidth = "2rem"
+              td.innerHTML = " - "
+              tr.appendChild(td)
+          }
+          t.appendChild(tr)
+      }
 
- // Crear las filas y columnas de la tabla
- for (var i = 1; i <= filas; i++) {
-   var hilera = document.createElement("tr");
-
-   for (var j = 1; j <= columnas; j++) {
-     var celda = document.createElement("td");
-     hilera.appendChild(celda);
-   }
-
-   tblBody.appendChild(hilera);
- }
-
- tabla.appendChild(tblBody);
- 
-  div.appendChild(tabla);
+        editor.appendChild(t);
+      
+  
+      let small  = document.createElement("small")
+      small.innerHTML = "Fuente:"
+      editor.appendChild(small)
+  }
 });
 
 
@@ -60,22 +89,14 @@ function AggFila () {
   // Agregar una fila a la tabla
   if (filas < 100) {
     var hilera = tblBody.insertRow();
-    for (var j = 0; j <= columnas; j++) {
+    for (var j = 1; j <= columnas; j++) {
       var celda = hilera.insertCell();
-      if (j === 0) {
-        celda.classList.add("coordenadas", "coordenadas__fila");
-        var textoCelda = document.createTextNode(++filas);
-        celda.appendChild(textoCelda);
-      } else {
-        var textarea = document.createElement("textarea");
-        textarea.setAttribute("maxlength", "100");
-        textarea.setAttribute("oninput", "autoResize(this)");
-        textarea.classList.add("input-ajustada");
-        textarea.classList.add("celdaClickNull");
+      
         celda.classList.add("padre");
-        celda.appendChild(textarea);
-      }
+        hilera.appendChild(celda);
+        
     }
+    filas++;
   }
 }
 btnAggFila.addEventListener("click", AggFila);
@@ -105,22 +126,11 @@ btnAggColumna.addEventListener("click", function() {
   // Agregar una columna a la tabla
   if (columnas < 10) {
     columnas++;
-    for (var i = 0; i <= filas + boolTitleCols; i++) {
-      var celda = tblBody.rows[i].insertCell();
-      if (i === 0) {
-        celda.classList.add("coordenadas");
-        var textoCelda = document.createTextNode(String.fromCharCode(64 + columnas));
-        celda.appendChild(textoCelda);
-        i = i + boolTitleCols;
-      } else {
-        var textarea = document.createElement("textarea");
-        textarea.setAttribute("maxlength", "100");
-        textarea.setAttribute("oninput", "autoResize(this)");
-        textarea.classList.add("input-ajustada");
-        textarea.classList.add("celdaClickNull");
+    for (var i = 1; i <= filas + boolTitleCols; i++) {
+      
+        var celda = tblBody.rows[i].insertCell();
         celda.classList.add("padre");
-        celda.appendChild(textarea);
-      }
+      
     }
   }
 });
