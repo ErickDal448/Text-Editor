@@ -42,32 +42,34 @@ div.addEventListener("input", () => {
   }
 });
 BtnTable.addEventListener("click", () => {
-  let filas = +prompt('¿Cuántas filas?')
-  let columnas= +prompt('¿Cuántas columnas?')
+  let filas = +prompt('¿Cuántas filas?');
+  let columnas= +prompt('¿Cuántas columnas?');
 
   if(filas && columnas)
   {
-      let t    = document.createElement("table")
-      t.border = "1"
-      t.style.borderCollapse = "collapse"
-      t.style.border = "1px solid #ccc"
-      t.style.margin = "auto"
+      let t    = document.createElement("table");
+      t.border = "1";
+      t.style.borderCollapse = "collapse";
+      t.style.border = "1px solid #ccc";
+      t.style.margin = "auto";
       t.classList.add("table");
       t.classList.add("tabla__tabla");
 
       for( let l=0; l<filas; l++)
       {
           let tr   = document.createElement("tr")
-          tr.style.border = "1px solid #ccc"
-          tr.style.width = "2rem"
+          tr.style.border = "1px solid #ccc";
+          tr.style.width = "2rem";
+          tr.classList.add("celdaClickNull");
 
           for( let c=0; c<columnas; c++)
           {
               let td   = document.createElement("td")
-              td.style.border = "1px solid #ccc"
-              td.style.maxWidth = "2rem"
-              td.innerHTML = " - "
-              tr.appendChild(td)
+              td.style.border = "1px solid #ccc";
+              td.style.maxWidth = "2rem";
+              td.innerHTML = " - ";
+              tr.appendChild(td);
+              td.classList.add("celdaClickNull");
           }
           t.appendChild(tr)
       }

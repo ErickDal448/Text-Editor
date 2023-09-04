@@ -1,82 +1,53 @@
-// Obtener el elemento tablaPadre que contiene todos los textareas
-let tablaPadre = document.querySelector(".tabla__tabla");
+// Obtener el elemento div que contiene el elemento tablaPadre
+let divContenedor = document.querySelector(".page");
 
-// Variables para almacenar el tiempo de inicio y fin del clic
-let tiempoInicio = 0;
-let tiempoFin = 0;
+// Obtener el menú personalizado
+let menu = document.querySelector(".context-menu");
 
-// Agregar un controlador de eventos mousedown al elemento tablaPadre
-tablaPadre.addEventListener("mousedown", function(e) {
-  // Verificar si el elemento que se hizo clic es un textarea con la clase "celdaClickNull"
-  if (e.target.classList.contains("celdaClickNull")) {
-    // Establecer el tiempo de inicio del clic
-    tiempoInicio = new Date().getTime();
-  }
-}); 
+divContenedor.addEventListener("mousedown", function(e) {
+  // Buscar el elemento tablaPadre en el árbol DOM ascendente desde el elemento en el que se hizo clic
+  let testPadre = e.target.closest(".tabla__tabla");
+  
+  // Verificar si se encontró el elemento tablaPadre
+  if (testPadre) {
+    tablaPadre = testPadre;  
 
-// Agregar un controlador de eventos mouseup al elemento tablaPadre
-tablaPadre.addEventListener("mouseup", function(e) {
-  // Verificar si el elemento que se hizo clic es un textarea con la clase "celdaClickNull"
-  if (e.target.classList.contains("celdaClickNull")) {
-    // Establecer el tiempo de fin del clic
-    tiempoFin = new Date().getTime();
+    // Obtener todos los elementos td dentro del elemento tablaPadre
+    let tds = tablaPadre.querySelectorAll("td");
 
-    // Verificar si el tiempo transcurrido entre los dos eventos es mayor a 3 segundos
-    if (tiempoFin - tiempoInicio > 200) {
-      // Cambiar el estilo del textarea correspondiente
-      let textarea = e.target;
-      let parentElement = textarea.parentNode;
-      if (textarea.style.backgroundColor === "black") {
-        textarea.style.backgroundColor = "white";
-        textarea.value = "";
-        textarea.readOnly = false;
-        parentElement.style.backgroundColor = "white";
-      } else {
-        textarea.style.backgroundColor = "black";
-        textarea.value = null;
-        textarea.style.height = "100%";
-        textarea.readOnly = true;
-        parentElement.style.backgroundColor = "black";
-      }
-    }
-  }
-});
+    // Agregar un controlador de eventos contextmenu a cada elemento td
+    tds.forEach(function(td) {
+      td.addEventListener("contextmenu", function(e) {
+        // Prevenir la acción predeterminada del navegador al hacer clic derecho
+        e.preventDefault();
 
-// ---------------------------------------------------- //
-// Funcion para que funcione en moviles de misma manera //
-// Agregar un controlador de eventos touchstart al elemento padre
-tablaPadre.addEventListener("touchstart", function(e) {
-  // Verificar si el elemento que se hizo clic es un textarea con la clase "celdaClickNull"
-  if (e.target.classList.contains("celdaClickNull")) {
-    // Establecer el tiempo de inicio del clic
-    tiempoInicio = new Date().getTime();
+        // Mostrar el menú personalizado en la posición del cursor
+        menu.style.display = "block";
+        menu.style.left = `${e.clientX}px`;
+        menu.style.top = `${e.clientY}px`;
+
+        // Agregar un controlador de eventos click al botón del menú personalizado
+        menu.querySelector("button").addEventListener("click", function() {
+          // Cambiar el estilo del td correspondiente
+          if (td.style.background === "black") {
+            td.style.background = "white";
+            td.textContent = "";
+          } else {
+            td.style.background = "black";
+            td.textContent = null;
+          }
+
+          // Ocultar el menú personalizado después de hacer clic en el botón
+          menu.style.display = "none";
+        });
+      });
+    });
   }
 });
 
-// Agregar un controlador de eventos touchend al elemento padre
-tablaPadre.addEventListener("touchend", function(e) {
-  // Verificar si el elemento que se hizo clic es un textarea con la clase "celdaClickNull"
-  if (e.target.classList.contains("celdaClickNull")) {
-    // Establecer el tiempo de fin del clic
-    tiempoFin = new Date().getTime();
-
-    // Verificar si el tiempo transcurrido entre los dos eventos es mayor a 3 segundos
-    if (tiempoFin - tiempoInicio > 200) {
-      // Cambiar el estilo del textarea correspondiente
-      let textarea = e.target;
-      let parentElement = textarea.parentNode;
-      if (textarea.style.backgroundColor === "black") {
-        textarea.style.backgroundColor = "white";
-        textarea.value = "";
-        textarea.readOnly = false;
-        parentElement.style.backgroundColor = "white";
-      } else {
-        textarea.style.backgroundColor = "black";
-        textarea.value = null;
-        textarea.style.height = "100%";
-        textarea.readOnly = true;
-        parentElement.style.backgroundColor = "black";
-      }
-    }
+// Agregar un controlador de eventos click al documento para ocultar el menú personalizado cuando se hace clic fuera de él
+document.addEventListener("click", function(e) {
+  if (!menu.contains(e.target)) {
+    menu.style.display = "none";
   }
 });
