@@ -5,10 +5,6 @@ const BtnTable = document.querySelector(".bi-table")
 var boolTitleCols = false;
 var boolTitleRows = false;
 
-//calcular el total de filas y columnas
-var columnas = 5;
-var filas = 5;
-
 //seleccionar las variables de los botones para aumentar o disminuir las filas o columnas
 var btnAggFila = document.querySelector(".btn__aggFila");
 var btnDelFila = document.querySelector(".btn__delFila");
@@ -56,12 +52,17 @@ BtnTable.addEventListener("click", () => {
       t.classList.add("tabla__tabla");
 
       for( let l=0; l<filas; l++)
-      {
-          let tr   = document.createElement("tr")
-          tr.style.border = "1px solid #ccc";
-          tr.style.width = "2rem";
-          tr.classList.add("celdaClickNull");
-
+      { 
+        let tr   = document.createElement("tr")
+        tr.style.border = "1px solid #ccc";
+        tr.style.width = "2rem";
+        tr.classList.add("celdaClickNull");
+        if(l === 0){
+          tr.classList.add("SubFila0");
+        }
+        if(l === 1){
+          tr.classList.add("SubFila1");
+        }
           for( let c=0; c<columnas; c++)
           {
               let td   = document.createElement("td")
@@ -70,6 +71,12 @@ BtnTable.addEventListener("click", () => {
               td.innerHTML = " - ";
               tr.appendChild(td);
               td.classList.add("celdaClickNull");
+              if(c === 0){
+                tr.classList.add("SubColumna0");
+              }
+              if(c === 1){
+                tr.classList.add("SubColumna1");
+              }
           }
           t.appendChild(tr)
       }
@@ -84,83 +91,155 @@ BtnTable.addEventListener("click", () => {
 });
 
 
-// ------------- //
-// Agregar Filas //
-// ------------- //
-function AggFila () {
-  // Agregar una fila a la tabla
-  if (filas < 100) {
-    var hilera = tblBody.insertRow();
-    for (var j = 1; j <= columnas; j++) {
-      var celda = hilera.insertCell();
-      
-        celda.classList.add("padre");
-        hilera.appendChild(celda);
-        
-    }
-    filas++;
-  }
-}
-btnAggFila.addEventListener("click", AggFila);
 
-// -------------- //
-// Eliminar Filas //
-// -------------- //
-btnDelFila.addEventListener("click", function() {
-  // Eliminar una fila de la tabla
-  if (filas > 1) {
-    tblBody.deleteRow(-1);
-    filas--;
-  }
-});
 
-// ---------------- //
-// Agregar Columnas //
-// ---------------- //
-btnAggColumna.addEventListener("click", function() {
-  let contBool = 0;
-  if(boolTitleCols == true){
-    contBool = 1;
-  }
-  else{
-    contBool = 0;
-  }
-  // Agregar una columna a la tabla
-  if (columnas < 10) {
-    columnas++;
-    for (var i = 1; i <= filas + boolTitleCols; i++) {
-      
-        var celda = tblBody.rows[i].insertCell();
-        celda.classList.add("padre");
-      
-    }
-  }
-});
 
-// --------------- //
-// elimina Columna //
-// --------------- //
-btnDelColumna.addEventListener("click", function() {
-  let contBool = 0;
-  if(boolTitleCols == true){
-    contBool = 1;
-  }
-  else{
-    contBool = 0;
-  }
-  // Eliminar una columna de la tabla
-  if (columnas > 1) {
-    for (var i = 0; i <= filas + contBool; i++) {
-      if(i == 1){
-        i = i + contBool;
+// Obtener el elemento div que contiene el elemento tablaPadre
+let divContenedor = document.querySelector(".page");
+
+// Obtener el menú personalizado
+let menu = document.querySelector(".context-menu");
+
+// Crear una variable para almacenar una referencia a la tabla seleccionada
+let tablaSeleccionada;
+
+divContenedor.addEventListener("mousedown", function(e) {
+  // Buscar el elemento tabla en el árbol DOM ascendente desde el elemento en el que se hizo clic
+  let tabla = e.target.closest("table");
+  
+  // Verificar si se encontró el elemento tabla
+  if (tabla) {
+    // Almacenar una referencia a la tabla seleccionada
+    tablaSeleccionada = tabla;
+
+    // Agregar un controlador de eventos contextmenu al elemento tabla
+    tabla.addEventListener("contextmenu", function(e) {
+      // Prevenir la acción predeterminada del navegador al hacer clic derecho
+      e.preventDefault();
+
+      // Mostrar el menú personalizado en la posición del cursor
+      menu.style.display = "flex";
+      menu.style.left = `${e.clientX}px`;
+      menu.style.top = `${e.clientY}px`;
+    });
+
+    let tds = tabla.querySelectorAll("td");
+
+    // Agregar un controlador de eventos contextmenu a cada elemento td
+    tds.forEach(function(td) {
+      td.addEventListener("contextmenu", function(e) {
+        // Prevenir la acción predeterminada del navegador al hacer clic derecho
+        e.preventDefault();
+
+        // Almacenar una referencia al elemento td en el que se hizo clic derecho
+        tdSeleccionado = td;
+
+        // Mostrar el menú personalizado en la posición del cursor
+        menu.style.display = "flex";
+        menu.style.left = `${e.clientX}px`;
+        menu.style.top = `${e.clientY}px`;
+      });
+    });
+
+    // Agregar un controlador de eventos click al botón del menú personalizado
+    menu.querySelector(".BtnNull").addEventListener("click", function() {
+      // Cambiar el estilo del td correspondiente
+      if (tdSeleccionado.style.background == "black") {
+        tdSeleccionado.style.background = "white";
+        tdSeleccionado.textContent = "-";
+      } else {
+        tdSeleccionado.style.background = "black";
+        tdSeleccionado.textContent = "-";
       }
-      tblBody.rows[i].deleteCell(-1);
-    }
-    columnas--;
+      
+
+      // Ocultar el menú personalizado después de hacer clic en el botón
+      menu.style.display = "none";
+    });
   }
-  aggMainTitle();
-  aggMainTitle();
-  ActualizarSelectColumnas();
+});
+
+// Agregar un controlador de eventos click al botón "Agregar Fila" del menú personalizado
+menu.querySelector("button:nth-of-type(2)").addEventListener("click", function() {
+  // Verificar si hay una tabla seleccionada
+  if (tablaSeleccionada) {
+    // Agregar una nueva fila a la tabla seleccionada
+    let nuevaFila = tablaSeleccionada.insertRow(-1);
+
+    // Obtener el número de columnas en la primera fila de la tabla
+    let columnas = tablaSeleccionada.rows[0].cells.length;
+
+    // Agregar celdas a la nueva fila
+    for (let i = 0; i < columnas; i++) {
+      let nuevaCelda = nuevaFila.insertCell(i);
+      nuevaCelda.style.border = "1px solid #ccc";
+      nuevaCelda.style.maxWidth = "2rem";
+      nuevaCelda.textContent = "-";
+    }
+  }
+
+  // Ocultar el menú personalizado después de hacer clic en el botón
+  menu.style.display = "none";
+});
+
+// Agregar un controlador de eventos click al botón "Agregar Columna" del menú personalizado
+menu.querySelector("button:nth-of-type(3)").addEventListener("click", function() {
+  // Verificar si hay una tabla seleccionada
+  if (tablaSeleccionada) {
+    // Obtener todas las filas de la tabla seleccionada
+    let filas = tablaSeleccionada.rows;
+
+    // Agregar una nueva celda a cada fila de la tabla seleccionada
+    for (let i = 0; i < filas.length; i++) {
+      let nuevaCelda = filas[i].insertCell(-1);
+      nuevaCelda.style.border = "1px solid #ccc";
+      nuevaCelda.style.maxWidth = "2rem";
+      nuevaCelda.textContent = "-";
+    }
+  }
+
+  // Ocultar el menú personalizado después de hacer clic en el botón
+  menu.style.display = "none";
+});
+
+// Agregar un controlador de eventos click al botón "Eliminar Fila" del menú personalizado
+menu.querySelector("button:nth-of-type(4)").addEventListener("click", function() {
+  // Verificar si hay una tabla seleccionada
+  if (tablaSeleccionada) {
+    // Eliminar la última fila de la tabla seleccionada
+    if (tablaSeleccionada.rows.length > 0) {
+      tablaSeleccionada.deleteRow(-1);
+    }
+  }
+
+  // Ocultar el menú personalizado después de hacer clic en el botón
+  menu.style.display = "none";
+});
+
+// Agregar un controlador de eventos click al botón "Eliminar Columna" del menú personalizado
+menu.querySelector("button:nth-of-type(5)").addEventListener("click", function() {
+  // Verificar si hay una tabla seleccionada
+  if (tablaSeleccionada) {
+    // Obtener todas las filas de la tabla seleccionada
+    let filas = tablaSeleccionada.rows;
+
+    // Eliminar la última celda de cada fila de la tabla seleccionada
+    for (let i = 0; i < filas.length; i++) {
+      if (filas[i].cells.length > 0) {
+        filas[i].deleteCell(-1);
+      }
+    }
+  }
+
+  // Ocultar el menú personalizado después de hacer clic en el botón
+  menu.style.display = "none";
+});
+
+// Agregar un controlador de eventos click al documento para ocultar el menú personalizado cuando se hace clic fuera de él
+document.addEventListener("click", function(e) {
+  if (!menu.contains(e.target)) {
+    menu.style.display = "none";
+  }
 });
 
 // // ---------------- //
@@ -196,17 +275,9 @@ btnDelColumna.addEventListener("click", function() {
 //         var hileraNueva = tablaAnidada.insertRow();
 //         var celdaNueva = hileraNueva.insertCell();
 //         celdaNueva.classList.add("celda-ajustada");
-//         var textareaNuevo = document.createElement("textarea");
-//         textareaNuevo.setAttribute("maxlength", "100");
-//         textareaNuevo.setAttribute("oninput", "autoResize(this)");
-//         textareaNuevo.classList.add("input-ajustada");
-//         textareaNuevo.classList.add("celdaClickNull");
-//         celdaNueva.appendChild(textareaNuevo);
 //       } else {
 //         // Si no existe una tabla anidada, ocultar el input dentro de la segunda celda y crear una nueva tabla anidada en esta celda
 //         var celda = hilera.cells[1];
-//         var textarea = celda.querySelector("textarea");
-//         textarea.classList.add("tabla-inputfilaTema");
 //         if (textarea) {
 //           textarea.style.display = "none";
 //          }
@@ -219,28 +290,10 @@ btnDelColumna.addEventListener("click", function() {
 //         var celda1 = hilera1.insertCell();
 //         celda1.rowSpan = 50;
 //         celda1.classList.add("celda-ajustada", "col-6");
-//         var textarea1 = document.createElement("textarea");
-//         textarea1.setAttribute("maxlength", "100");
-//         textarea1.setAttribute("oninput", "autoResize(this)");
-//         textarea1.classList.add("input-ajustada");
-//         textarea1.classList.add("celdaClickNull");
-//         celda1.appendChild(textarea1);
 //         var celda2 = hilera1.insertCell();
 //         celda2.classList.add("celda-ajustada");
-//         var textarea2 = document.createElement("textarea");
-//         textarea2.setAttribute("maxlength", "100");
-//         textarea2.setAttribute("oninput", "autoResize(this)");
-//         textarea2.classList.add("input-ajustada");
-//         textarea2.classList.add("celdaClickNull");
-//         celda2.appendChild(textarea2);
 //         var celda3 = hilera2.insertCell();
 //         celda3.classList.add("celda-ajustada");
-//         var textarea3 = document.createElement("textarea");
-//         textarea3.setAttribute("maxlength", "100");
-//         textarea3.setAttribute("oninput", "autoResize(this)");
-//         textarea3.classList.add("input-ajustada");
-//         textarea3.classList.add("celdaClickNull");
-//         celda3.appendChild(textarea3);
 //         celda.appendChild(tablaAnidada);
 //       }
       
@@ -292,12 +345,6 @@ btnDelColumna.addEventListener("click", function() {
 //           // Agregar una hilera anidada horizontal
 //           var hileraAnidada = document.createElement("tr");
 //           var celdaAnidada = document.createElement("td");
-//           var textarea = document.createElement("textarea");
-//           textarea.setAttribute("maxlength", "100");
-//           textarea.setAttribute("oninput", "autoResize(this)");
-//           textarea.classList.add("input-ajustada");
-//           textarea.classList.add("celdaClickNull");
-//           celdaAnidada.appendChild(textarea);
 //           hileraAnidada.appendChild(celdaAnidada);
 //           tblBodyAnidado.appendChild(hileraAnidada);
 
@@ -430,12 +477,7 @@ btnDelColumna.addEventListener("click", function() {
 //       var celdaNueva = tablaAnidada.rows[1].insertCell();
 //       celdaNueva.classList.add("celda-ajustada-cols");
       
-//       var textareaNuevo = document.createElement("textarea");
-//       textareaNuevo.setAttribute("maxlength", "100");
-//       textareaNuevo.setAttribute("oninput", "autoResize(this)");
-//       textareaNuevo.classList.add("input-ajustada");
-//       textareaNuevo.classList.add("celdaClickNull");
-//       celdaNueva.appendChild(textareaNuevo);
+//       
 //       celdaNueva.style.width = "2.5rem";
 //       tablaAnidada.style.width = "100%";
   
@@ -443,11 +485,7 @@ btnDelColumna.addEventListener("click", function() {
 //       tablaAnidada.rows[0].cells[0].colSpan += 1;
 //     } else {
 //       // Si no existe una tabla anidada, ocultar el input dentro de la celda y crear una nueva tabla anidada en esta celda
-//       var textarea = celda.querySelector("textarea");
-//       textarea.classList.add("tabla-inputfilaTema");
-//       if (textarea) {
-//         textarea.style.display = "none";
-//       }
+//       
 //       celda.style.padding = "0px";
 //       var tablaAnidada = document.createElement("table");
 //       var hilera1 = tablaAnidada.insertRow();
@@ -455,23 +493,12 @@ btnDelColumna.addEventListener("click", function() {
 //       var celda1 = hilera1.insertCell();
 //       celda1.colSpan = 4;
 //       celda1.classList.add("celda-ajustada-cols", "col-6");
-//       var textarea1 = document.createElement("textarea");
-//       textarea1.setAttribute("maxlength", "100");
-//       textarea1.setAttribute("oninput", "autoResize(this)");
-//       textarea1.classList.add("input-ajustada");
-//       textarea1.classList.add("celdaClickNull");
-//       celda1.appendChild(textarea1);
+//       
 //       for (var i = 0; i < 2; i++) {
 //         var celdaNueva = hilera2.insertCell();
 //         celdaNueva.classList.add("celda-ajustada-cols");
 //         celdaNueva.style.width = "2.5rem";
 //         tablaAnidada.style.width = "100%";
-//         var textareaNuevo = document.createElement("textarea");
-//         textareaNuevo.setAttribute("maxlength", "100");
-//         textareaNuevo.setAttribute("oninput", "autoResize(this)");
-//         textareaNuevo.classList.add("input-ajustada");
-//         textareaNuevo.classList.add("celdaClickNull");
-//         celdaNueva.appendChild(textareaNuevo);
 //       }
 //       celda.appendChild(tablaAnidada);
 //     }
@@ -500,11 +527,6 @@ btnDelColumna.addEventListener("click", function() {
 //         var trExistente = tablaExistente.rows[0];
 //         var tdNuevo = document.createElement("td");
 //         tdNuevo.classList.add("celda-ajustada-colms");
-//         var textareaNuevo = document.createElement("textarea");
-//         textareaNuevo.setAttribute("maxlength", "100");
-//         textareaNuevo.setAttribute("oninput", "autoResize(this)");
-//         textareaNuevo.classList.add("input-ajustada");
-//         textareaNuevo.classList.add("celdaClickNull");
 //         tdNuevo.appendChild(textareaNuevo);
 //         trExistente.appendChild(tdNuevo);
 //       } else {
@@ -516,12 +538,6 @@ btnDelColumna.addEventListener("click", function() {
 //         for (var j = 0; j < 2; j++) {
 //           var td = document.createElement("td");
 //           td.classList.add("celda-ajustada-colms");
-//           var textareaNuevo = document.createElement("textarea");
-//           textareaNuevo.setAttribute("maxlength", "100");
-//           textareaNuevo.setAttribute("oninput", "autoResize(this)");
-//           textareaNuevo.classList.add("input-ajustada");
-//           textareaNuevo.classList.add("celdaClickNull");
-//           td.appendChild(textareaNuevo);
 //           tr.appendChild(td);
 //         }
 //         tabla.appendChild(tr);
@@ -641,12 +657,7 @@ btnDelColumna.addEventListener("click", function() {
 //         let trExistente = tablaAnidada.rows[1];
 //         trExistente.removeChild(trExistente.lastChild);
   
-//         // Si no hay más td en la segunda fila, eliminar la tabla anidada y mostrar el textarea existente en la celda
-//         if (trExistente.childNodes.length === 1) {
-//           celda.removeChild(tablaAnidada);
-//           let textareaExistente = celda.querySelector("textarea");
-//           textareaExistente.style.display = "block";
-//         }
+//         
 //       }
 //     }
 //   };

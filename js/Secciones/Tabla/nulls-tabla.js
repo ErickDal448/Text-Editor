@@ -26,14 +26,14 @@ divContenedor.addEventListener("mousedown", function(e) {
         tdSeleccionado = td;
 
         // Mostrar el menú personalizado en la posición del cursor
-        menu.style.display = "block";
+        menu.style.display = "flex";
         menu.style.left = `${e.clientX}px`;
         menu.style.top = `${e.clientY}px`;
       });
     });
 
     // Agregar un controlador de eventos click al botón del menú personalizado
-    menu.querySelector("button").addEventListener("click", function() {
+    menu.querySelector(".BtnNull").addEventListener("click", function() {
       // Cambiar el estilo del td correspondiente
       if (tdSeleccionado.style.background == "black") {
         tdSeleccionado.style.background = "white";
