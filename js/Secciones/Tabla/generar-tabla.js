@@ -57,12 +57,6 @@ BtnTable.addEventListener("click", () => {
         tr.style.border = "1px solid #ccc";
         tr.style.width = "2rem";
         tr.classList.add("celdaClickNull");
-        if(l === 0){
-          tr.classList.add("SubFila0");
-        }
-        if(l === 1){
-          tr.classList.add("SubFila1");
-        }
           for( let c=0; c<columnas; c++)
           {
               let td   = document.createElement("td")
@@ -72,10 +66,16 @@ BtnTable.addEventListener("click", () => {
               tr.appendChild(td);
               td.classList.add("celdaClickNull");
               if(c === 0){
-                tr.classList.add("SubColumna0");
+                td.classList.add("SubFila0");
               }
               if(c === 1){
-                tr.classList.add("SubColumna1");
+                td.classList.add("SubFila1");
+              }
+              if(l === 0){
+                td.classList.add("SubColumna0");
+              }
+              if(l === 1){
+                td.classList.add("SubColumna1");
               }
           }
           t.appendChild(tr)
@@ -99,6 +99,8 @@ let divContenedor = document.querySelector(".page");
 
 // Obtener el menú personalizado
 let menu = document.querySelector(".context-menu");
+let subMenuElementsCol = document.querySelectorAll(".TableSubDivitionsCol");
+let subMenuElementsRow = document.querySelectorAll(".TableSubDivitionsRow");
 
 // Crear una variable para almacenar una referencia a la tabla seleccionada
 let tablaSeleccionada;
@@ -121,6 +123,29 @@ divContenedor.addEventListener("mousedown", function(e) {
       menu.style.display = "flex";
       menu.style.left = `${e.clientX}px`;
       menu.style.top = `${e.clientY}px`;
+
+      if (e.target.classList.contains("SubFila0") || e.target.classList.contains("SubFila1")) {
+        // Mostrar el submenú personalizado
+        subMenuElementsRow.forEach(function(element) {
+          element.style.display = "block";
+        });
+      }
+      else{
+        subMenuElementsRow.forEach(function(element) {
+          element.style.display = "none";
+        });
+      }
+      if (e.target.classList.contains("SubColumna0") || e.target.classList.contains("SubColumna1")) {
+        // Mostrar el submenú personalizado
+        subMenuElementsCol.forEach(function(element) {
+          element.style.display = "block";
+        });
+      }
+      else{
+        subMenuElementsCol.forEach(function(element) {
+          element.style.display = "none";
+        });
+      }
     });
 
     let tds = tabla.querySelectorAll("td");
@@ -156,6 +181,126 @@ divContenedor.addEventListener("mousedown", function(e) {
       // Ocultar el menú personalizado después de hacer clic en el botón
       menu.style.display = "none";
     });
+
+    menu.querySelector(".makeSubRow").addEventListener("click", function(){
+      //funcion de hacer subfilas en columna A
+        function agregarSubfila() {
+          let contBool = 0;
+          if(boolTitleCols == true){
+            contBool = 1;
+          }
+          else{
+            contBool = 0;
+          }
+          // Obtener el índice de la fila
+          let indiceFila = e.target.closest("tr");
+          var fila = indiceFila.rowIndex + contBool;
+           // Obtener la cantidad de celdas en la primera fila
+          let columnas = indiceFila.cells.length;
+
+          // Mostrar el índice de la fila
+          console.log("Número de fila:", fila);
+        
+          let hilera = tabla.rows[fila];
+    
+          // Verificar si ya existe una tabla anidada en la segunda celda de la fila
+          var tablaAnidada = hilera.cells[0].querySelector("table");
+          if (tablaAnidada) {
+            // Si ya existe una tabla anidada, agregar una nueva fila a esta tabla
+            var hileraNueva = tablaAnidada.insertRow();
+            var celdaNueva = hileraNueva.insertCell();
+            celdaNueva.classList.add("celda-ajustada");
+          } else {
+            // Si no existe una tabla anidada, ocultar el input dentro de la segunda celda y crear una nueva tabla anidada en esta celda
+            if(indiceFila.textContent !== null){
+              indiceFila.textContent = null;
+            }
+            var celda = hilera.cells[0];
+            celda.style.padding = "0px";
+            var tablaAnidada = document.createElement("table");
+            tablaAnidada.classList.add("tabla-filasTema");
+            tablaAnidada.style.width = "100%";
+            var hilera1 = tablaAnidada.insertRow();
+            var hilera2 = tablaAnidada.insertRow();
+            var celda1 = hilera1.insertCell();
+            celda1.rowSpan = 50;
+            celda1.classList.add("celda-ajustada", "col-6");
+            celda1.textContent = "-";
+            var celda2 = hilera1.insertCell();
+            celda2.classList.add("celda-ajustada");
+            celda2.textContent = "-";
+            var celda3 = hilera2.insertCell();
+            celda3.classList.add("celda-ajustada");
+            celda3.textContent = "-";
+            celda.appendChild(tablaAnidada);
+          }
+          
+          for(k = 0; k < columnas; k++){
+            hilera.cells[k].style.padding = "0px";
+          }
+        }
+    
+        //hacer subfilas completas
+        let contBool = 0;
+        if(boolTitleCols == true){
+          contBool = 1;
+        }
+        else{
+          contBool = 0;
+        }
+        // Obtener el índice de la columna
+        let indiceColumna = e.target.cellIndex;
+            
+        // Mostrar el índice de la columna
+        console.log("Índice de columna:", indiceColumna);
+        var columna = indiceColumna;
+        // Buscar el elemento tr más cercano en el árbol DOM ascendente desde el elemento en el que se hizo clic
+        let indiceFila = e.target.closest("tr");
+
+        // Obtener el índice de la fila
+        var fila = indiceFila.rowIndex + contBool;
+
+        // Acceder a la fila seleccionada
+        let filaSeleccionada = tabla.rows[fila];
+
+        // Obtener la cantidad de celdas en la fila seleccionada
+        let columnas = filaSeleccionada.cells.length;
+
+        // Mostrar la cantidad de columnas
+        console.log("Cantidad de columnas:", columnas);
+    
+        // Verificar si la columna es "0" o "1"
+        if (columna == 0 || columna == 1) {
+    
+          // Obtener la fila existente
+            //Si la columna es A crear el formato de titulo
+            if(columna == 0){
+              agregarSubfila();
+            }
+          // Recorrer cada celda de la fila existente
+          for (var i = 1; i <= columnas; i++) {
+            var celdaExistente = filaSeleccionada.cells[i];
+            celdaExistente.classList.add("celda-anidada"); // Agregar una clase a la celda que contiene una tabla anidada
+    
+            // Crear una tabla anidada dentro de la celda existente
+            var tablaAnidada = document.createElement("table");
+            tablaAnidada.classList.add("tabla-anidada"); // Agregar una clase a la tabla anidada para aplicar estilos
+            var tblBodyAnidado = document.createElement("tbody");
+    
+            // Agregar una hilera anidada horizontal
+            var hileraAnidada = document.createElement("tr");
+            var celdaAnidada = document.createElement("td");
+            celdaAnidada.textContent = "-";
+            
+            hileraAnidada.appendChild(celdaAnidada);
+            tblBodyAnidado.appendChild(hileraAnidada);
+    
+            tablaAnidada.appendChild(tblBodyAnidado);
+            celdaExistente.appendChild(tablaAnidada);
+          }
+        }
+    
+      });
   }
 });
 
@@ -239,6 +384,9 @@ menu.querySelector("button:nth-of-type(5)").addEventListener("click", function()
 document.addEventListener("click", function(e) {
   if (!menu.contains(e.target)) {
     menu.style.display = "none";
+    subMenuElements.forEach(function(element) {
+      element.style.display = "none";
+    });
   }
 });
 

@@ -194,3 +194,7 @@ textarea {
   .context-menu li:hover {
     background-color: lightgray;
   }
+
+  .TableSubDivitions{
+    display: none;
+  }
