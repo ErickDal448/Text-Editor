@@ -102,28 +102,31 @@ let menu = document.querySelector(".context-menu");
 let subMenuElementsCol = document.querySelectorAll(".TableSubDivitionsCol");
 let subMenuElementsRow = document.querySelectorAll(".TableSubDivitionsRow");
 
-// Crear una variable para almacenar una referencia a la tabla seleccionada
-let tablaSeleccionada;
+// Crear una variable para almacenar una ref erencia a la tabla seleccionada
+var tablaSeleccionada;
+var tdSeleccionado;
+
+// Seleccionar la tabla
+var Stabla;
 
 divContenedor.addEventListener("mousedown", function(e) {
   // Buscar el elemento tabla en el árbol DOM ascendente desde el elemento en el que se hizo clic
-  let tabla = e.target.closest("table");
+  Stabla = e.target.closest("table");
   
   // Verificar si se encontró el elemento tabla
-  if (tabla) {
+  if (Stabla) {
     // Almacenar una referencia a la tabla seleccionada
-    tablaSeleccionada = tabla;
+    tablaSeleccionada = Stabla;
 
-    // Agregar un controlador de eventos contextmenu al elemento tabla
-    tabla.addEventListener("contextmenu", function(e) {
+    tablaSeleccionada.addEventListener("contextmenu", function(e) {
       // Prevenir la acción predeterminada del navegador al hacer clic derecho
       e.preventDefault();
-
+  
       // Mostrar el menú personalizado en la posición del cursor
       menu.style.display = "flex";
       menu.style.left = `${e.clientX}px`;
       menu.style.top = `${e.clientY}px`;
-
+  
       if (e.target.classList.contains("SubFila0") || e.target.classList.contains("SubFila1")) {
         // Mostrar el submenú personalizado
         subMenuElementsRow.forEach(function(element) {
@@ -147,8 +150,7 @@ divContenedor.addEventListener("mousedown", function(e) {
         });
       }
     });
-
-    let tds = tabla.querySelectorAll("td");
+    let tds = tablaSeleccionada.querySelectorAll("td");
 
     // Agregar un controlador de eventos contextmenu a cada elemento td
     tds.forEach(function(td) {
@@ -165,24 +167,35 @@ divContenedor.addEventListener("mousedown", function(e) {
         menu.style.top = `${e.clientY}px`;
       });
     });
+  }
+});
 
-    // Agregar un controlador de eventos click al botón del menú personalizado
-    menu.querySelector(".BtnNull").addEventListener("click", function() {
-      // Cambiar el estilo del td correspondiente
-      if (tdSeleccionado.style.background == "black") {
+// Definir una función con nombre para manejar el evento click
+function handleClick() {
+  console.log("SISISI")
+    // Cambiar el estilo del td correspondiente
+    if (tdSeleccionado.style.background == "black") {
         tdSeleccionado.style.background = "white";
         tdSeleccionado.textContent = "-";
-      } else {
+    } else {
         tdSeleccionado.style.background = "black";
         tdSeleccionado.textContent = "-";
-      }
-      
+    }
 
-      // Ocultar el menú personalizado después de hacer clic en el botón
-      menu.style.display = "none";
-    });
+    // Ocultar el menú personalizado después de hacer clic en el botón
+    menu.style.display = "none";
+}
+document.addEventListener("DOMContentLoaded", function() {
+  // Tu código para agregar el controlador del evento aquí
+  menu.querySelector(".BtnNull").addEventListener("click", handleClick);
+  // Eliminar el controlador de eventos click si es necesario
+  menu.querySelector(".BtnNull").removeEventListener("click", handleClick);
+  // Hacer subfilas
+  menu.querySelector(".makeSubRow").addEventListener("click", SubRowMake);
+});
 
-    menu.querySelector(".makeSubRow").addEventListener("click", function(){
+  function SubRowMake(){
+    console.log(tdSeleccionado);
       //funcion de hacer subfilas en columna A
         function agregarSubfila() {
           let contBool = 0;
@@ -193,15 +206,16 @@ divContenedor.addEventListener("mousedown", function(e) {
             contBool = 0;
           }
           // Obtener el índice de la fila
-          let indiceFila = e.target.closest("tr");
-          var fila = indiceFila.rowIndex + contBool;
+          let indiceFila = tdSeleccionado.closest("tr");
+          console.log(indiceFila)
+          let numfila = indiceFila.rowIndex + contBool;
            // Obtener la cantidad de celdas en la primera fila
           let columnas = indiceFila.cells.length;
 
           // Mostrar el índice de la fila
-          console.log("Número de fila:", fila);
+          console.log("Número de fila:", numfila);
         
-          let hilera = tabla.rows[fila];
+          let hilera = Stabla.rows[numfila];
     
           // Verificar si ya existe una tabla anidada en la segunda celda de la fila
           var tablaAnidada = hilera.cells[0].querySelector("table");
@@ -249,37 +263,38 @@ divContenedor.addEventListener("mousedown", function(e) {
           contBool = 0;
         }
         // Obtener el índice de la columna
-        let indiceColumna = e.target.cellIndex;
+        let indiceColumna = tdSeleccionado.cellIndex;
             
         // Mostrar el índice de la columna
         console.log("Índice de columna:", indiceColumna);
-        var columna = indiceColumna;
+        let numcolumna = indiceColumna;
         // Buscar el elemento tr más cercano en el árbol DOM ascendente desde el elemento en el que se hizo clic
-        let indiceFila = e.target.closest("tr");
+        let indiceFila = tdSeleccionado.closest("tr");
 
         // Obtener el índice de la fila
-        var fila = indiceFila.rowIndex + contBool;
+        let numfila = indiceFila.rowIndex + contBool;
 
         // Acceder a la fila seleccionada
-        let filaSeleccionada = tabla.rows[fila];
+        let filaSeleccionada = Stabla.rows[numfila];
 
         // Obtener la cantidad de celdas en la fila seleccionada
-        let columnas = filaSeleccionada.cells.length;
+        let Tcolumnas = filaSeleccionada.cells.length;
 
         // Mostrar la cantidad de columnas
-        console.log("Cantidad de columnas:", columnas);
+        console.log("Cantidad de columnas:", Tcolumnas);
     
         // Verificar si la columna es "0" o "1"
-        if (columna == 0 || columna == 1) {
+        if (numcolumna == 0 || numcolumna == 1) {
     
           // Obtener la fila existente
             //Si la columna es A crear el formato de titulo
-            if(columna == 0){
+            if(numcolumna == 0){
               agregarSubfila();
             }
           // Recorrer cada celda de la fila existente
-          for (var i = 1; i <= columnas; i++) {
+          for (var i = 1; i < Tcolumnas; i++) {
             var celdaExistente = filaSeleccionada.cells[i];
+            console.log(celdaExistente);
             celdaExistente.classList.add("celda-anidada"); // Agregar una clase a la celda que contiene una tabla anidada
     
             // Crear una tabla anidada dentro de la celda existente
@@ -300,9 +315,7 @@ divContenedor.addEventListener("mousedown", function(e) {
           }
         }
     
-      });
-  }
-});
+      };
 
 // Agregar un controlador de eventos click al botón "Agregar Fila" del menú personalizado
 menu.querySelector("button:nth-of-type(2)").addEventListener("click", function() {
@@ -312,10 +325,10 @@ menu.querySelector("button:nth-of-type(2)").addEventListener("click", function()
     let nuevaFila = tablaSeleccionada.insertRow(-1);
 
     // Obtener el número de columnas en la primera fila de la tabla
-    let columnas = tablaSeleccionada.rows[0].cells.length;
+    let Tcolumnas = tablaSeleccionada.rows[0].cells.length;
 
     // Agregar celdas a la nueva fila
-    for (let i = 0; i < columnas; i++) {
+    for (let i = 0; i < Tcolumnas; i++) {
       let nuevaCelda = nuevaFila.insertCell(i);
       nuevaCelda.style.border = "1px solid #ccc";
       nuevaCelda.style.maxWidth = "2rem";
@@ -332,11 +345,11 @@ menu.querySelector("button:nth-of-type(3)").addEventListener("click", function()
   // Verificar si hay una tabla seleccionada
   if (tablaSeleccionada) {
     // Obtener todas las filas de la tabla seleccionada
-    let filas = tablaSeleccionada.rows;
+    let Tfilas = tablaSeleccionada.rows;
 
     // Agregar una nueva celda a cada fila de la tabla seleccionada
-    for (let i = 0; i < filas.length; i++) {
-      let nuevaCelda = filas[i].insertCell(-1);
+    for (let i = 0; i < Tfilas.length; i++) {
+      let nuevaCelda = Tfilas[i].insertCell(-1);
       nuevaCelda.style.border = "1px solid #ccc";
       nuevaCelda.style.maxWidth = "2rem";
       nuevaCelda.textContent = "-";
@@ -366,12 +379,12 @@ menu.querySelector("button:nth-of-type(5)").addEventListener("click", function()
   // Verificar si hay una tabla seleccionada
   if (tablaSeleccionada) {
     // Obtener todas las filas de la tabla seleccionada
-    let filas = tablaSeleccionada.rows;
+    let Tfilas = tablaSeleccionada.rows;
 
     // Eliminar la última celda de cada fila de la tabla seleccionada
-    for (let i = 0; i < filas.length; i++) {
-      if (filas[i].cells.length > 0) {
-        filas[i].deleteCell(-1);
+    for (let i = 0; i < Tfilas.length; i++) {
+      if (Tfilas[i].cells.length > 0) {
+        Tfilas[i].deleteCell(-1);
       }
     }
   }
@@ -384,7 +397,10 @@ menu.querySelector("button:nth-of-type(5)").addEventListener("click", function()
 document.addEventListener("click", function(e) {
   if (!menu.contains(e.target)) {
     menu.style.display = "none";
-    subMenuElements.forEach(function(element) {
+    subMenuElementsCol.forEach(function(element) {
+      element.style.display = "none";
+    });
+    subMenuElementsRow.forEach(function(element) {
       element.style.display = "none";
     });
   }
