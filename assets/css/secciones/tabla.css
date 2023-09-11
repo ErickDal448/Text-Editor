@@ -198,3 +198,7 @@ textarea {
   .TableSubDivitions{
     display: none;
   }
+
+  .td-null {
+    background-color: black;
+  }
