@@ -138,6 +138,7 @@ td.celda-anidada {
     height: 90%;
     text-align: center;
 }
+
 textarea {
     resize: vertical;
     white-space:normal;
@@ -195,10 +196,19 @@ textarea {
     background-color: lightgray;
   }
 
+  /* Table controls*/
   .TableSubDivitions{
     display: none;
   }
 
   .td-null {
     background-color: black;
+  }
+
+  .tabla-filasTema{
+    height: 100%;
+  }
+
+  .celda-ajustada{
+    max-width: 1rem;
   }

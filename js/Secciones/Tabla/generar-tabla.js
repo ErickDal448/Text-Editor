@@ -202,12 +202,7 @@ divContenedor.addEventListener("mousedown", function(e) {
       }
     });
     tds = tablaSeleccionada.querySelectorAll("td");
-    if (tds) {
-      console.log("si")
-      tds.forEach(td => {
-          ajustarAlturaFila(td.parentNode);
-      });
-    }
+    
     // Agregar un controlador de eventos contextmenu a cada elemento td
     tds.forEach(function(td) {
       td.addEventListener("contextmenu", function(e) {
@@ -279,7 +274,7 @@ if (tds) {
   console.log("si")
   tds.forEach(td => {
     td.addEventListener('input', () => {
-      //ajustarAlturaFila(td.parentNode);
+      ajustarAlturaFila(td.parentNode);
     });
   });
 }
@@ -330,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Si ya existe una tabla anidada, agregar una nueva fila a esta tabla
             var hileraNueva = tablaAnidada.insertRow();
             var celdaNueva = hileraNueva.insertCell();
-            celdaNueva.classList.add("celda-ajustada", "CelRow");
+            celdaNueva.classList.add("celda-ajustada", "CelRow", "Cell0");
             celdaNueva.textContent = "-";
           } else {
             // Si no existe una tabla anidada, ocultar el input dentro de la segunda celda y crear una nueva tabla anidada en esta celda
@@ -347,13 +342,13 @@ document.addEventListener("DOMContentLoaded", function() {
             var hilera2 = tablaAnidada.insertRow();
             var celda1 = hilera1.insertCell();
             celda1.rowSpan = 50;
-            celda1.classList.add("celda-ajustada", "col-6", "CelRow");
+            celda1.classList.add("celda-ajustada", "col-6", "CelRow", "mainCell");
             celda1.textContent = "-";
             var celda2 = hilera1.insertCell();
-            celda2.classList.add("celda-ajustada", "CelRow");
+            celda2.classList.add("celda-ajustada", "CelRow", "Cell0");
             celda2.textContent = "-";
             var celda3 = hilera2.insertCell();
-            celda3.classList.add("celda-ajustada", "CelRow");
+            celda3.classList.add("celda-ajustada", "CelRow", "Cell0");
             celda3.textContent = "-";
             celda.appendChild(tablaAnidada);
           }
@@ -408,7 +403,7 @@ document.addEventListener("DOMContentLoaded", function() {
           for (var i = 1; i < Tcolumnas; i++) {
             var celdaExistente = filaSeleccionada.cells[i];
             console.log(celdaExistente);
-            celdaExistente.classList.add("celda-ajustada", "CelRow"); // Agregar una clase a la celda que contiene una tabla anidada
+            celdaExistente.classList.add("celda-ajustada", "CelRow", "backCells"); // Agregar una clase a la celda que contiene una tabla anidada
     
             // Crear una tabla anidada dentro de la celda existente
             var tablaAnidada = document.createElement("table");
@@ -419,7 +414,7 @@ document.addEventListener("DOMContentLoaded", function() {
             var hileraAnidada = document.createElement("tr");
             var celdaAnidada = document.createElement("td");
             celdaAnidada.textContent = "-";
-            celdaAnidada.classList.add("celda-ajustada", "CelRow");
+            celdaAnidada.classList.add("celda-ajustada", "CelRow", "secondCells");
             
             hileraAnidada.appendChild(celdaAnidada);
             tblBodyAnidado.appendChild(hileraAnidada);
@@ -434,7 +429,51 @@ document.addEventListener("DOMContentLoaded", function() {
       // ---------------- //
       // ELIMINA SUBFILAS //
       // ---------------- //
-      function SubRowDell(){
+
+      function SubRowDell() {
+        // Obtener la fila del elemento seleccionado
+        let fila = tdSeleccionado.parentNode;
+
+        // Verificar si la celda en la columna 0 tiene un elemento hijo con la clase "mainCell"
+        let inicio = fila.cells[0].querySelector('.mainCell') ? 0 : 1;
+
+        // Recorrer las celdas de la fila
+        for (let i = inicio; i < fila.cells.length; i++) {
+          let celda = fila.cells[i];    
+
+            // Si es la primera celda, eliminar la celda "Cell0" en la posición 0
+            if (i == 0) {
+              let Cell0 = celda.querySelector(".Cell0");
+              if (Cell0) {
+                Cell0.remove();
+              }
+            } 
+            // Para las demás celdas, eliminar la tabla anidada
+            else {
+              let tablaAnidada = celda.querySelector("table");
+              if (tablaAnidada) {
+                tablaAnidada.remove();
+              }
+            }
+
+            // Después de eliminar, verificar si quedan celdas "secondCells"
+            let secondCells = celda.querySelectorAll('.secondCells');
+
+            // Si no quedan celdas "secondCells", volver al estado original
+            if (secondCells.length === 0) {
+              // Aquí puedes agregar el código para volver al estado original
+              
+              let Cell0 = celda.querySelector(".Cell0");
+              if (Cell0) {
+                Cell0.remove();
+              }
+            }
+          }
+        }
+      
+      
+      
+      function SubRowDell2(){
           
         //funcion de eliminar subfilas en columna A
         function eliminarSubfila() {
@@ -448,12 +487,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
           // Obtener el número de la fila donde se quiere eliminar la subfila
           var fila = parseInt(document.querySelector(".form-subfila1").value) + contBool;
-
-          // Verificar que el valor del input sea un número válido
-          if (isNaN(fila) || fila < 1 || fila > filas) {
-            alert("Por favor ingresa un número de fila válido");
-            return;
-          }
 
           // Obtener la tabla y la fila donde se quiere eliminar la subfila
           var tabla = document.querySelector(".tabla__tabla");
@@ -501,11 +534,6 @@ document.addEventListener("DOMContentLoaded", function() {
           var fila = parseInt(document.querySelector(".form-subfila1").value) + contBool;
           var columna =  document.querySelector(".form-subfila2").value;
 
-          // Verificar que el valor del input sea un número válido
-          if (isNaN(fila) || fila < 1 + contBool || fila > filas) {
-            alert("Por favor ingresa un número de fila válido");
-            return;
-          }
           //Si la columna es A crear el formato de titulo
           if(columna === "A"){
             eliminarSubfila();
@@ -622,217 +650,6 @@ document.addEventListener("click", function(e) {
   }
 });
 
-// // ---------------- //
-// // AGREGAR SUBFILAS //
-// // ---------------- //
-//     //funcion de hacer subfilas en columna A
-//     function agregarSubfila() {
-//       let contBool = 0;
-//       if(boolTitleCols == true){
-//         contBool = 1;
-//       }
-//       else{
-//         contBool = 0;
-//       }
-
-//       // Obtener el número de la fila donde se quiere agregar la subfila
-//       var fila = parseInt(document.querySelector(".form-subfila1").value) + contBool;
-
-//       // Verificar que el valor del input sea un número válido
-//       if (isNaN(fila) || fila < 1 || fila > filas) {
-//         alert("Por favor ingresa un número de fila válido");
-//         return;
-//       }
-
-//       // Obtener la tabla y la fila donde se quiere agregar la subfila
-//       var tabla = document.querySelector(".tabla__tabla");
-//       var hilera = tabla.rows[fila];
-
-//       // Verificar si ya existe una tabla anidada en la segunda celda de la fila
-//       var tablaAnidada = hilera.cells[1].querySelector("table");
-//       if (tablaAnidada) {
-//         // Si ya existe una tabla anidada, agregar una nueva fila a esta tabla
-//         var hileraNueva = tablaAnidada.insertRow();
-//         var celdaNueva = hileraNueva.insertCell();
-//         celdaNueva.classList.add("celda-ajustada");
-//       } else {
-//         // Si no existe una tabla anidada, ocultar el input dentro de la segunda celda y crear una nueva tabla anidada en esta celda
-//         var celda = hilera.cells[1];
-//         if (textarea) {
-//           textarea.style.display = "none";
-//          }
-//         celda.style.padding = "0px";
-//         var tablaAnidada = document.createElement("table");
-//         tablaAnidada.classList.add("tabla-filasTema");
-//         tablaAnidada.style.width = "100%";
-//         var hilera1 = tablaAnidada.insertRow();
-//         var hilera2 = tablaAnidada.insertRow();
-//         var celda1 = hilera1.insertCell();
-//         celda1.rowSpan = 50;
-//         celda1.classList.add("celda-ajustada", "col-6");
-//         var celda2 = hilera1.insertCell();
-//         celda2.classList.add("celda-ajustada");
-//         var celda3 = hilera2.insertCell();
-//         celda3.classList.add("celda-ajustada");
-//         celda.appendChild(tablaAnidada);
-//       }
-      
-//       for(k = 1; k <= columnas; k++){
-//         hilera.cells[k].style.padding = "0px";
-//       }
-//     }
-
-//     //hacer subfilas completas
-//     document.querySelector(".add-subfila").addEventListener("click", function() {
-//       let contBool = 0;
-//       if(boolTitleCols == true){
-//         contBool = 1;
-//       }
-//       else{
-//         contBool = 0;
-//       }
-//       // Obtener los valores de los campos de entrada
-//       var fila = parseInt(document.querySelector(".form-subfila1").value) + contBool;
-//       var columna = document.querySelector(".form-subfila2").value;
-
-//       // Verificar que el valor del input sea un número válido
-//       if (isNaN(fila) || fila < 1 + contBool || fila > filas) {
-//         alert("Por favor ingresa un número de fila válido, elegiste la fila: " + fila);
-//         return;
-//       }
-
-//       // Verificar si la columna es "A" o "B"
-//       if (columna === "A" || columna === "B") {
-//         // Convertir la letra de la columna en un índice numérico
-//         var columnaIndice = columna.charCodeAt(0) - 64;
-
-//         // Obtener la fila existente
-//         var filaExistente = tblBody.rows[fila];
-//           //Si la columna es A crear el formato de titulo
-//           if(columna === "A"){
-//             agregarSubfila();
-//           }
-//         // Recorrer cada celda de la fila existente
-//         for (var i = 2; i <= columnas; i++) {
-//           var celdaExistente = filaExistente.cells[i];
-//           celdaExistente.classList.add("celda-anidada"); // Agregar una clase a la celda que contiene una tabla anidada
-
-//           // Crear una tabla anidada dentro de la celda existente
-//           var tablaAnidada = document.createElement("table");
-//           tablaAnidada.classList.add("tabla-anidada"); // Agregar una clase a la tabla anidada para aplicar estilos
-//           var tblBodyAnidado = document.createElement("tbody");
-
-//           // Agregar una hilera anidada horizontal
-//           var hileraAnidada = document.createElement("tr");
-//           var celdaAnidada = document.createElement("td");
-//           hileraAnidada.appendChild(celdaAnidada);
-//           tblBodyAnidado.appendChild(hileraAnidada);
-
-//           tablaAnidada.appendChild(tblBodyAnidado);
-//           celdaExistente.appendChild(tablaAnidada);
-//         }
-//       }
-//     });
-
-// // ---------------- //
-// // ELIMINA SUBFILAS //
-// // ---------------- //
-//     //funcion de eliminar subfilas en columna A
-//     function eliminarSubfila() {
-//       let contBool = 0;
-//       if(boolTitleCols == true){
-//         contBool = 1;
-//       }
-//       else{
-//         contBool = 0;
-//       }
-
-//       // Obtener el número de la fila donde se quiere eliminar la subfila
-//       var fila = parseInt(document.querySelector(".form-subfila1").value) + contBool;
-
-//       // Verificar que el valor del input sea un número válido
-//       if (isNaN(fila) || fila < 1 || fila > filas) {
-//         alert("Por favor ingresa un número de fila válido");
-//         return;
-//       }
-
-//       // Obtener la tabla y la fila donde se quiere eliminar la subfila
-//       var tabla = document.querySelector(".tabla__tabla");
-//       var hilera = tabla.rows[fila];
-
-//       // Verificar si existe una tabla anidada en la segunda celda de la fila
-//       var tablaAnidadaEsp = hilera.cells[1].querySelector("table");
-//       if (tablaAnidadaEsp) {
-//         // Si existe una tabla anidada, eliminar la última fila de esta tabla
-//         if (tablaAnidadaEsp.rows.length > 1) {
-//           tablaAnidadaEsp.deleteRow(tablaAnidadaEsp.rows.length - 1);
-
-//           // Ajustar el rowSpan de la primera celda de la tabla anidada
-//           if (tablaAnidadaEsp.rows.length > 0) {
-//             tablaAnidadaEsp.rows[0].cells[0].rowSpan -= 1;
-//           }
-//         }
-//         if (tablaAnidadaEsp.rows.length == 1) {
-//           var tablaTitle = hilera.cells[1].querySelector(".tabla-filasTema");
-//           tablaTitle.parentNode.removeChild(tablaTitle);
-//           var inputOriginal = hilera.cells[1].querySelector(".tabla-inputfilaTema");
-//           inputOriginal.style.display = 'block';
-//           for(k = 1; k <= columnas; k++){
-//             hilera.cells[k].style.padding = "0.5rem 0.5rem";
-//           }
-//         }
-//       }
-//       else {
-//         alert("No hay ninguna subfila para eliminar en esta fila");
-//       }
-//     }
-
-//     //eliminar subfilas completas
-//     // Agregar un controlador de eventos al botón para que llame a la función eliminarSubfilaCompleta cuando se presione el botón
-//     document.querySelector(".del-subfila").addEventListener("click", eliminarSubfilaCompleta);
-//     function eliminarSubfilaCompleta() {
-//       let contBool = 0;
-//       if(boolTitleCols == true){
-//         contBool = 1;
-//       }
-//       else{
-//         contBool = 0;
-//       }
-//       // Obtener el número de la fila donde se quiere eliminar la subfila
-//       var fila = parseInt(document.querySelector(".form-subfila1").value) + contBool;
-//       var columna =  document.querySelector(".form-subfila2").value;
-
-//       // Verificar que el valor del input sea un número válido
-//       if (isNaN(fila) || fila < 1 + contBool || fila > filas) {
-//         alert("Por favor ingresa un número de fila válido");
-//         return;
-//       }
-//       //Si la columna es A crear el formato de titulo
-//       if(columna === "A"){
-//         eliminarSubfila();
-//       }
-//       // Obtener la tabla y la fila donde se quiere eliminar la subfila
-//       var tabla = document.querySelector(".tabla__tabla");
-//       var hilera = tabla.rows[fila];
-      
-//       // Recorrer cada celda de la fila
-//       for (var i = 2; i < hilera.cells.length; i++) {
-//         var celda = hilera.cells[i];
-        
-
-//         // Verificar si existe una tabla anidada en la celda
-//         var tablaAnidada = celda.querySelector("table");
-//         if (tablaAnidada) {
-//           // Si existe una tabla anidada, eliminarla
-//           celda.removeChild(tablaAnidada);
-//         }
-//       }
-//       for(k = 2; k <= columnas; k++){
-//         hilera.cells[k].style.padding = "0.5rem 0.5rem";
-//       }
-//     }
-
-    
 //   // ------------------- //
 //   // AGREGAR SUBCOLUMNAS //
 //   // ------------------- //
