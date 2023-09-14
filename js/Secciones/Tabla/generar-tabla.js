@@ -591,7 +591,7 @@ document.addEventListener("click", function(e) {
 //   // ------------------- //
 //   // AGREGAR SUBCOLUMNAS //
 //   // ------------------- //
-function SubColMake(){
+function SubColMake2(){
   console.log(tdSeleccionado);
   Stabla = tdSeleccionado.closest("div > table");
 
@@ -607,12 +607,82 @@ function SubColMake(){
     let tdPadre = tdSeleccionado.closest("tr > td");
     let indiceColumna = tdPadre.cellIndex;
     let numcolumna = indiceColumna + contBool;
-    let filas = Stabla.rows.length;
+    
 
-    for(let i=1; i<filas; i++){
-      let celda = Stabla.rows[i].cells[numcolumna];
-      var tablaAnidada = celda.querySelector("table");
-      if (tablaAnidada) {
+    let celda = Stabla.rows[0].cells[numcolumna];
+    var tablaAnidada = celda.querySelector("table");
+    if (tablaAnidada) {
+      // Si ya existe una tabla, agregar un nuevo td con un textarea dentro a la primera fila de esta tabla
+      var trExistente = Stabla.rows[0];
+      var tdNuevo = document.createElement("td");
+      tdNuevo.classList.add("celda-ajustada-colms");
+      trExistente.appendChild(tdNuevo);
+      tdNuevo.textContent = "-";
+      trExistente.style.width = "2.5rem";
+      tablaAnidada.style.width = "100%";
+
+      // Ajustar el colSpan de la primera celda de la tabla anidada
+      tablaAnidada.rows[0].cells[0].colSpan += 1;
+    } else {
+      if(celda.textContent !== ''){
+        celda.innerHTML = '';
+      }
+      celda.style.padding = "0px";
+
+
+      var tablaAnidada = document.createElement("table");
+      var tr = document.createElement("tr");
+      for (var j = 0; j < 2; j++) {
+        var td = document.createElement("td");
+        td.classList.add("celda-ajustada-colms");
+        tr.appendChild(td);
+      }
+
+
+      let hilera1 = tablaAnidada.insertRow();
+      let hilera2 = tablaAnidada.insertRow();
+      let celda1 = hilera1.insertCell();
+      celda1.colSpan = 4;
+      celda1.classList.add("celda-ajustada-cols", "col-6");
+      var td = document.createElement("td");
+      td.classList.add("celda-ajustada-colms");
+      td.textContent = "-";
+      celda1.appendChild(td);
+      for (var i = 1; i < 2; i++) {
+        var celdaNueva = hilera2.insertCell();
+        celdaNueva.classList.add("celda-ajustada-cols");
+        celdaNueva.style.width = "2.5rem";
+        tablaAnidada.style.width = "100%";
+        var tdNuevo = document.createElement("td");
+        tdNuevo.classList.add("celda-ajustada-colms");
+        tdNuevo.textContent = "-";
+        celdaNueva.appendChild(tdNuevo);
+      }
+      tablaAnidada.appendChild(tr);
+      celda.appendChild(tablaAnidada);
+  }
+}
+
+function recorridoSubCol() { 
+  let contBool = 0;
+    if(boolTitleCols == true){
+      contBool = 1;
+    }
+    else{
+      contBool = 0;
+    }
+    let filas = Stabla.rows.length;
+    // Recorrer cada celda de la columna especificada
+    for (var i = 2 + contBool; i <= filas + contBool; i++) {
+      var celda = Stabla.rows[i].cells[numcolumna];
+      celda.style.padding = "0px";
+      celda.style.border = "none";
+      celda.style.flexDirection = "column";
+      celda.style.display = "flex";
+
+      // Verificar si ya existe una tabla en la celda
+      var tablaExistente = celda.querySelector("table");
+      if (tablaExistente) {
         // Si ya existe una tabla, agregar un nuevo td con un textarea dentro a la primera fila de esta tabla
         var trExistente = Stabla.rows[0];
         var tdNuevo = document.createElement("td");
@@ -620,21 +690,21 @@ function SubColMake(){
         trExistente.appendChild(tdNuevo);
         tdNuevo.textContent = "-";
       } else {
-        if(celda.textContent !== ''){
-          celda.innerHTML = '';
-        }
-        celda.style.padding = "0px";
-        var tablaAnidada = document.createElement("table");
+        // Ocultar el input existente en la celda
+        var textAreaExistente = celda.querySelector("textarea");
+        textAreaExistente.style.display = "none";
+        var tabla = document.createElement("table");
         var tr = document.createElement("tr");
         for (var j = 0; j < 2; j++) {
           var td = document.createElement("td");
           td.classList.add("celda-ajustada-colms");
+          td.textContent = "-";
           tr.appendChild(td);
+        }
+        tabla.appendChild(tr);
+        celda.appendChild(tabla);
       }
-      tablaAnidada.appendChild(tr);
-      celda.appendChild(tablaAnidada);
     }
-  }
 }
 
 let filaPadre = tdSeleccionado.parentNode.rowIndex;
@@ -644,7 +714,75 @@ if (filaPadre == 0 || filaPadre == 1) {
   
 };
 
-  
+function SubColMake() {
+  // Si la celda seleccionada está en la fila 0 o 1, entonces agrega subcolumnas
+  if (tdSeleccionado.parentNode.rowIndex <= 1) {
+    let inicio;
+    if(tdSeleccionado.parentNode.rowIndex == 1){
+      inicio = 1;
+    }else{
+      inicio = 0;
+    }
+    agregarSubcolumnas(tdSeleccionado, inicio);
+  }
+}
+
+function agregarSubcolumnas(celda, inicio) {
+  // Obtener la tabla que contiene la celda
+  let tabla = celda.parentNode.parentNode.parentNode;
+
+  // Obtener todas las filas de la tabla
+  let filas = tabla.querySelectorAll(".celdaClickNull");
+
+  // Obtener el índice de columna de la celda de entrada
+  let indiceColumna = celda.cellIndex;
+
+  // Recorrer todas las filas de la tabla
+  for (let i = inicio; i < filas.length; i++) {
+    // Obtener la celda correspondiente en la columna
+    let celdaActual = filas[i].querySelectorAll(".celdaClickNull")[indiceColumna];
+
+    // Comprobar si celdaActual es undefined
+    if (celdaActual) {
+      console.log(celdaActual);
+      // Crear una nueva tabla para las subcolumnas
+      let subTabla = document.createElement("table");
+      subTabla.classList.add("tabla-anidadaCols")
+      // Si la celda está en la fila 0, entonces agrega tres filas a la subtabla
+      if (i === 0) {
+        let subFila = subTabla.insertRow();
+        let subCelda = subFila.insertCell();
+        subCelda.colSpan = "2";
+        subCelda.textContent = "-";
+        subCelda.classList.add("celda-ajustada-colms")
+        subFila = subTabla.insertRow();
+        for (let i = 0; i < 2; i++) {
+            let subCelda = subFila.insertCell();
+            subCelda.textContent = "-";
+            subCelda.classList.add("celda-ajustada-colms")
+          
+        }
+      }
+      
+      // Si la celda está en la fila 1, entonces agrega dos filas a la subtabla
+      else if(i > 0){
+        let subFila = subTabla.insertRow();
+        for (let i = 0; i < 2; i++) {
+          let subCelda = subFila.insertCell();
+          subCelda.textContent = "-";
+          subCelda.classList.add("celda-ajustada-colms")
+        }
+      }
+
+      // Reemplaza el contenido de la celda por la nueva tabla
+      celdaActual.innerHTML = '';
+      celdaActual.appendChild(subTabla);
+    }
+
+  }
+}
+
+
 // // -------------------- //
 // // ELIMINAR SUBCOLUMNAS //
 // // -------------------- //
