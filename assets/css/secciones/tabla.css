@@ -64,6 +64,11 @@
 
 .tabla__tabla{
     margin-top: 1rem;
+    padding: 0.5rem 0.5rem;
+    color: var(--bs-table-color-state,var(--bs-table-color-type,var(--bs-table-color)));
+    background-color: var(--bs-table-bg);
+    border-bottom-width: var(--bs-border-width);
+    box-shadow: inset 0 0 0 9999px var(--bs-table-bg-state,var(--bs-table-bg-type,var(--bs-table-accent-bg)));
 }
 
 table {
@@ -145,8 +150,8 @@ td.celda-anidada {
     height: 2rem;
     border-bottom: none;
     border-top: none;
-    min-width: 8rem;
-    max-width: 8rem;
+    min-width: 1rem;
+    max-width: 1rem;
   }
 
 .input-ajustada {
@@ -227,4 +232,11 @@ textarea {
 
   .celda-ajustada{
     max-width: 1rem;
+  }
+
+  td{
+    border-bottom-width: 1px;
+    border-color: rgb(204, 204, 204);
+    background-color: white;
+    max-width: 3rem;
   }

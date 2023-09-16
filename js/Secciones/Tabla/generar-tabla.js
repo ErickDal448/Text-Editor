@@ -61,7 +61,7 @@ BtnTable.addEventListener("click", () => {
           {
               let td   = document.createElement("td")
               td.style.border = "1px solid #ccc";
-              td.style.maxWidth = "2rem";
+              td.style.maxWidth = "3rem";
               td.innerHTML = " - ";
               tr.appendChild(td);
               td.classList.add("celdaClickNull");
@@ -84,10 +84,12 @@ BtnTable.addEventListener("click", () => {
         editor.appendChild(t);
       
   
+        añadirDetectoresEventos();
       let small  = document.createElement("small")
       small.innerHTML = "Fuente:"
       editor.appendChild(small)
   }
+
 });
 
 
@@ -288,9 +290,12 @@ document.addEventListener("DOMContentLoaded", function() {
   menu.querySelector(".delSubRow").addEventListener("click", SubRowDell);
   // Agregar subfila
   menu.querySelector(".addSubRow").addEventListener("click", SubRowMake);
-
   // Hacer Subcolumnas 
-  menu.querySelector(".makeSubCol").addEventListener("click", SubColMake)
+  menu.querySelector(".makeSubCol").addEventListener("click", SubColMake);
+  // Agregar Subcolumnas 
+  menu.querySelector(".addSubCol").addEventListener("click",SubColMake);
+  //Eliminar Subcolumnas 
+  menu.querySelector(".delSubCol").addEventListener("click",SubColDell);
 }); 
 
       // ---------------- //
@@ -591,128 +596,6 @@ document.addEventListener("click", function(e) {
 //   // ------------------- //
 //   // AGREGAR SUBCOLUMNAS //
 //   // ------------------- //
-function SubColMake2(){
-  console.log(tdSeleccionado);
-  Stabla = tdSeleccionado.closest("div > table");
-
-  function agregarSubcolumna() {
-    let contBool = 0;
-    if(boolTitleCols == true){
-      contBool = 1;
-    }
-    else{
-      contBool = 0;
-    }
-
-    let tdPadre = tdSeleccionado.closest("tr > td");
-    let indiceColumna = tdPadre.cellIndex;
-    let numcolumna = indiceColumna + contBool;
-    
-
-    let celda = Stabla.rows[0].cells[numcolumna];
-    var tablaAnidada = celda.querySelector("table");
-    if (tablaAnidada) {
-      // Si ya existe una tabla, agregar un nuevo td con un textarea dentro a la primera fila de esta tabla
-      var trExistente = Stabla.rows[0];
-      var tdNuevo = document.createElement("td");
-      tdNuevo.classList.add("celda-ajustada-colms");
-      trExistente.appendChild(tdNuevo);
-      tdNuevo.textContent = "-";
-      trExistente.style.width = "2.5rem";
-      tablaAnidada.style.width = "100%";
-
-      // Ajustar el colSpan de la primera celda de la tabla anidada
-      tablaAnidada.rows[0].cells[0].colSpan += 1;
-    } else {
-      if(celda.textContent !== ''){
-        celda.innerHTML = '';
-      }
-      celda.style.padding = "0px";
-
-
-      var tablaAnidada = document.createElement("table");
-      var tr = document.createElement("tr");
-      for (var j = 0; j < 2; j++) {
-        var td = document.createElement("td");
-        td.classList.add("celda-ajustada-colms");
-        tr.appendChild(td);
-      }
-
-
-      let hilera1 = tablaAnidada.insertRow();
-      let hilera2 = tablaAnidada.insertRow();
-      let celda1 = hilera1.insertCell();
-      celda1.colSpan = 4;
-      celda1.classList.add("celda-ajustada-cols", "col-6");
-      var td = document.createElement("td");
-      td.classList.add("celda-ajustada-colms");
-      td.textContent = "-";
-      celda1.appendChild(td);
-      for (var i = 1; i < 2; i++) {
-        var celdaNueva = hilera2.insertCell();
-        celdaNueva.classList.add("celda-ajustada-cols");
-        celdaNueva.style.width = "2.5rem";
-        tablaAnidada.style.width = "100%";
-        var tdNuevo = document.createElement("td");
-        tdNuevo.classList.add("celda-ajustada-colms");
-        tdNuevo.textContent = "-";
-        celdaNueva.appendChild(tdNuevo);
-      }
-      tablaAnidada.appendChild(tr);
-      celda.appendChild(tablaAnidada);
-  }
-}
-
-function recorridoSubCol() { 
-  let contBool = 0;
-    if(boolTitleCols == true){
-      contBool = 1;
-    }
-    else{
-      contBool = 0;
-    }
-    let filas = Stabla.rows.length;
-    // Recorrer cada celda de la columna especificada
-    for (var i = 2 + contBool; i <= filas + contBool; i++) {
-      var celda = Stabla.rows[i].cells[numcolumna];
-      celda.style.padding = "0px";
-      celda.style.border = "none";
-      celda.style.flexDirection = "column";
-      celda.style.display = "flex";
-
-      // Verificar si ya existe una tabla en la celda
-      var tablaExistente = celda.querySelector("table");
-      if (tablaExistente) {
-        // Si ya existe una tabla, agregar un nuevo td con un textarea dentro a la primera fila de esta tabla
-        var trExistente = Stabla.rows[0];
-        var tdNuevo = document.createElement("td");
-        tdNuevo.classList.add("celda-ajustada-colms");
-        trExistente.appendChild(tdNuevo);
-        tdNuevo.textContent = "-";
-      } else {
-        // Ocultar el input existente en la celda
-        var textAreaExistente = celda.querySelector("textarea");
-        textAreaExistente.style.display = "none";
-        var tabla = document.createElement("table");
-        var tr = document.createElement("tr");
-        for (var j = 0; j < 2; j++) {
-          var td = document.createElement("td");
-          td.classList.add("celda-ajustada-colms");
-          td.textContent = "-";
-          tr.appendChild(td);
-        }
-        tabla.appendChild(tr);
-        celda.appendChild(tabla);
-      }
-    }
-}
-
-let filaPadre = tdSeleccionado.parentNode.rowIndex;
-if (filaPadre == 0 || filaPadre == 1) {
-  agregarSubcolumna();
-}
-  
-};
 
 function SubColMake() {
   // Si la celda seleccionada está en la fila 0 o 1, entonces agrega subcolumnas
@@ -726,10 +609,11 @@ function SubColMake() {
     agregarSubcolumnas(tdSeleccionado, inicio);
   }
 }
-
+ 
 function agregarSubcolumnas(celda, inicio) {
   // Obtener la tabla que contiene la celda
-  let tabla = celda.parentNode.parentNode.parentNode;
+  let tabla = celda.parentNode.parentNode;
+  console.log(tabla);
 
   // Obtener todas las filas de la tabla
   let filas = tabla.querySelectorAll(".celdaClickNull");
@@ -745,43 +629,178 @@ function agregarSubcolumnas(celda, inicio) {
     // Comprobar si celdaActual es undefined
     if (celdaActual) {
       console.log(celdaActual);
-      // Crear una nueva tabla para las subcolumnas
-      let subTabla = document.createElement("table");
-      subTabla.classList.add("tabla-anidadaCols")
-      // Si la celda está en la fila 0, entonces agrega tres filas a la subtabla
-      if (i === 0) {
-        let subFila = subTabla.insertRow();
-        let subCelda = subFila.insertCell();
-        subCelda.colSpan = "2";
-        subCelda.textContent = "-";
-        subCelda.classList.add("celda-ajustada-colms")
-        subFila = subTabla.insertRow();
-        for (let i = 0; i < 2; i++) {
-            let subCelda = subFila.insertCell();
+      // Comprobar si la celda ya ha sido procesada
+      if (celdaActual.classList.contains('ColsProcess')) {
+        let subTabla = celdaActual.querySelector(".tabla-anidadaCols");
+
+        if(i === 0){
+          let subFila0 = subTabla.querySelector(".Cell0Row0");
+          subFila0.colSpan += 1;
+          let subFila = subTabla.querySelector(".Cell0Row1");
+          let subCelda = subFila.insertCell();
+              subCelda.textContent = "-";
+              subCelda.classList.add("celda-ajustada-colms")
+        }
+        else{
+          let subFila = subTabla.querySelector(".CellnRown");
+          let subCelda = subFila.insertCell();
             subCelda.textContent = "-";
-            subCelda.classList.add("celda-ajustada-colms")
-          
+            subCelda.classList.add("celda-ajustada-colms");
         }
       }
-      
-      // Si la celda está en la fila 1, entonces agrega dos filas a la subtabla
-      else if(i > 0){
-        let subFila = subTabla.insertRow();
-        for (let i = 0; i < 2; i++) {
+      else{
+        // Marcar la celda como procesada
+        celdaActual.classList.add('ColsProcess');
+        // Crear una nueva tabla para las subcolumnas
+        let subTabla = document.createElement("table");
+        subTabla.classList.add("tabla-anidadaCols")
+        // Si la celda está en la fila 0, entonces agrega tres filas a la subtabla
+        if (i === 0) {
+          let subFila = subTabla.insertRow();
           let subCelda = subFila.insertCell();
+          subCelda.classList.add("Cell0Row0", "CelCol");
+          subCelda.colSpan = "2";
           subCelda.textContent = "-";
           subCelda.classList.add("celda-ajustada-colms")
+          subFila = subTabla.insertRow();
+          for (let i = 0; i < 2; i++) {
+              subFila.classList.add("Cell0Row1");
+              let subCelda = subFila.insertCell();
+              subCelda.textContent = "-";
+              subCelda.classList.add("celda-ajustada-colms", "CelCol")
+            
+          }
         }
+        
+        // Si la celda está en la fila 1, entonces agrega dos filas a la subtabla
+        else if(i > 0){
+          let subFila = subTabla.insertRow();
+          subFila.classList.add("CellnRown");
+          for (let i = 0; i < 2; i++) {
+            let subCelda = subFila.insertCell();
+            subCelda.textContent = "-";
+            subCelda.classList.add("celda-ajustada-colms", "CelCol")
+          }
+        }
+
+        // Reemplaza el contenido de la celda por la nueva tabla
+        celdaActual.innerHTML = '';
+        celdaActual.appendChild(subTabla);
       }
-
-      // Reemplaza el contenido de la celda por la nueva tabla
-      celdaActual.innerHTML = '';
-      celdaActual.appendChild(subTabla);
+      añadirDetectoresEventos();
     }
-
   }
 }
 
+// // -------------------- //
+// // ELIMINAR SUBCOLUMNAS //
+// // -------------------- //
+function SubColDell() {
+  // Si la celda seleccionada está en la fila 0 o 1, entonces agrega subcolumnas
+  if (tdSeleccionado.parentNode.rowIndex <= 1) {
+    let inicio;
+    if(tdSeleccionado.parentNode.rowIndex == 1){
+      inicio = 1;
+    }else{
+      inicio = 0;
+    }
+    eliminarSubcolumna(tdSeleccionado);
+  }
+}
+function eliminarSubcolumna(celda) {
+  // Obtener la tabla que contiene la celda
+  let tabla = celda.parentNode.parentNode;
+
+  // Obtener todas las filas de la tabla
+  let filas = tabla.querySelectorAll(".celdaClickNull");
+
+  // Obtener el índice de columna de la celda de entrada
+  let indiceColumna = celda.cellIndex;
+
+
+  // Recorrer todas las filas de la tabla
+  for (let i = 0; i < filas.length; i++) {
+    // Obtener la celda correspondiente en la columna
+    let celdaActual = filas[i].querySelectorAll(".celdaClickNull")[indiceColumna];
+
+    // Comprobar si celdaActual es undefined
+    if (celdaActual) {
+      // Comprobar si la celda ya ha sido procesada
+      if (celdaActual.classList.contains('ColsProcess')) {
+        // Obtener la subtabla
+        let subTabla = celdaActual.querySelector(".tabla-anidadaCols");
+        if (subTabla) {
+          if(i == 0){
+             // Obtener todas las filas de la subtabla
+            let subFilas = subTabla.querySelectorAll("tr");
+            let ultimaCelda = subFilas[1].lastElementChild;
+            let subCeldas = subFilas[1].querySelectorAll("td");
+            if (ultimaCelda) {
+              subFilas[1].removeChild(ultimaCelda);
+            }
+            if (subCeldas.length == 2) {
+              celdaActual.removeChild(subTabla);
+              celdaActual.classList.remove('ColsProcess');
+              celdaActual.textContent = "-";
+            }
+          }
+          else{
+            // Obtener todas las filas de la subtabla
+            let subFilas = subTabla.querySelectorAll("tr");
+            // Recorrer todas las filas de la subtabla
+            for (let j = 0; j < subFilas.length; j++) {
+              // Obtener todas las celdas de la fila
+              let subCeldas = subFilas[j].querySelectorAll("td");
+              // Si solo quedan dos celdas, eliminar una
+              if (subCeldas.length > 1) {
+                let ultimaCelda = subFilas[j].lastElementChild;
+                if (ultimaCelda) {
+                  subFilas[j].removeChild(ultimaCelda);
+                }
+              }
+              // Si solo queda una celda, eliminar toda la subtabla y remover la clase 'ColsProcess'
+              if (subCeldas.length == 2) {
+                celdaActual.removeChild(subTabla);
+                celdaActual.classList.remove('ColsProcess');
+                celdaActual.textContent = "-";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+// Esta es la función que añade los detectores de eventos a las celdas
+function añadirDetectoresEventos() {
+  let celdas = document.querySelectorAll('.celdaClickNull');
+  for (let i = 0; i < celdas.length; i++) {
+    celdas[i].addEventListener('input', ajustarAlturaSubtabla);
+  }
+}
+function ajustarAlturaSubtabla() {
+  // Obtener todas las celdas de la tabla
+  let celdas = document.querySelectorAll('.celdaClickNull');
+  console.log("sisiisis")
+  // Recorrer todas las celdas
+  for (let i = 0; i < celdas.length; i++) {
+    // Obtener la subtabla dentro de la celda
+    let subtabla = celdas[i].querySelector('table');
+
+    // Si la celda contiene una subtabla
+    if (subtabla) {
+      // Ajustar la altura de la subtabla para que coincida con la de la celda
+      subtabla.style.height = celdas[i].offsetHeight + 'px';
+    }
+  }
+}
+
+// Llamar a la función cuando la página se carga o se redimensiona
+window.onload = ajustarAlturaSubtabla;
+window.onresize = ajustarAlturaSubtabla;
 
 // // -------------------- //
 // // ELIMINAR SUBCOLUMNAS //
