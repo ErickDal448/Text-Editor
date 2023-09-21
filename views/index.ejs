@@ -1,0 +1,61 @@
+<%- include("templates/cabecera", {tituloWeb: 'inicio'}) %>
+    <body>
+        <section class="index__crear">
+                <h2 style="font-weight: bold; font-size: 3rem;">Crear Plantilla</h2>
+                <a class="index__link__crear" style="display: flex; flex-direction: column; align-items: center;">
+                    <img class="imgAdd" src="/assets/img/Agg-Plantilla.png" alt="Agregar Plantilla"></img>
+                </a>
+                
+        </section>
+
+        <section class="index__FondoPlantillas">
+            <div class="divMisPlantillas">
+                <h3 class="index__txtFondoPlantillas">Mis Plantillas</h3>
+                <div class="divRegistro-inicio">
+                    <span class="index__txtFondoPlantillas"><a href="">Registrar</a> / <a href="">Iniciar Sesión</a></span>
+                </div>
+                <div class="divPerfil">
+                    <span class="index__txtFondoPlantillas txtPerfilName"><%= nombreCuenta %></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle iconPerfil" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <section class="index__plantillas">
+                <% if (arrayPlantillas.length > 0) { %>
+                    <% arrayPlantillas.forEach(element => { %>
+                        <div class="card card__Plantilla">
+                            <div class="card-body">
+                            <p class="card-title"><%= element.titulo %></p>
+                            <p class="card-text"><%= element.descripcion %></p>
+                            <a href="#" class="btn btn-primary btn__plantilla">Ir a la plantilla</a>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </section>
+
+        </section>
+
+        
+        <section class="index__MenuCrear">
+            <section class="index__secMenuPlantilla"  id="index__MenuCrear">
+                <div class="card card__ConfPlantilla" id="card__ConfPlantilla">
+                    <div class="card-body">
+                        <h5 class="card-title">Creación de Plantilla</h5>
+                        <div class="input-group mb-3" style="margin-top: 15px;">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Título:</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Descripción:</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <a href="/api/EditarPlantilla" class="btn btn-primary btn__plantilla" style="margin-top: 35px;">Crear Plantilla</a>
+                    </div>
+                </div>
+            </section>
+        </section>
+<%- include("templates/footer") %>
