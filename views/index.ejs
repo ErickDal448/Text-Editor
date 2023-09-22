@@ -30,7 +30,10 @@
                             <div class="card-body">
                             <p class="card-title"><%= element.titulo %></p>
                             <p class="card-text"><%= element.descripcion %></p>
-                            <a href="#" class="btn btn-primary btn__plantilla">Ir a la plantilla</a>
+                            <div style="display: flex;">  
+                                <a href="plantillas/<%= element.id %>" class="btn btn-primary btn__plantilla">Ir a la plantilla</a>
+                                <button class="btnDeletePlantilla" id="btnDltPlantilla"  data-id="<%= element.id %>"><i style="color: rgb(231, 218, 218);" class="bi bi-trash3"></i></button>
+                            </div>
                             </div>
                         </div>
                     <% }) %>
@@ -45,15 +48,17 @@
                 <div class="card card__ConfPlantilla" id="card__ConfPlantilla">
                     <div class="card-body">
                         <h5 class="card-title">Creación de Plantilla</h5>
-                        <div class="input-group mb-3" style="margin-top: 15px;">
-                            <span class="input-group-text" id="inputGroup-sizing-default">Título:</span>
-                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="inputGroup-sizing-default">Descripción:</span>
-                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                        </div>
-                        <a href="/api/EditarPlantilla" class="btn btn-primary btn__plantilla" style="margin-top: 35px;">Crear Plantilla</a>
+                        <form action="/plantillas" method="POST">
+                            <div class="input-group mb-3" style="margin-top: 15px;">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Título:</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" maxlength="30" minlength="1" name="titulo">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Descripción:</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" maxlength="50" minlength="1" name="descripcion">
+                            </div>
+                            <center><button type="submit" class="btn btn-primary btn__plantilla" style="margin-top: 35px;">Crear Plantilla</button></center>
+                        </form>
                     </div>
                 </div>
             </section>

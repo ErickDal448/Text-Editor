@@ -93,6 +93,16 @@
     text-align: center;
 }
 
+.btnDeletePlantilla{
+    border-radius: 10px;
+    margin-left: 1rem;
+    background-color: var(--btn-cancel);
+}
+
+.btnDeletePlantilla:hover {
+    background-color: var(--btn-hoverCancel);
+} 
+
 .index__MenuCrear{
     display: none;
     position:fixed;

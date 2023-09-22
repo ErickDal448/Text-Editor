@@ -8,12 +8,6 @@
     // Obtener una referencia al enlace con la clase Link__crear
     const linkCrear = document.querySelector('.index__link__crear');
 
-    // Agregar un controlador de eventos para el evento click en el botón con la clase btn__plantilla
-    btnPlantilla.addEventListener('click', () => {
-        // Cambiar el display de la sección index__MenuCrear a flex
-        menuCrear.style.display = 'flex';
-    });
-
     // Agregar un controlador de eventos para el evento click en el enlace con la clase Link__crear
     linkCrear.addEventListener('click', () => {
         // Cambiar el display de la sección index__MenuCrear a flex

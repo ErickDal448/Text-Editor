@@ -8,7 +8,7 @@
                 
                 <div class="editar__menuicons__bloque div__MenuIzqBloque">
                     <button class="BtnToggleMenu" >
-                        <a href="/api/" class="editar__returnhome">
+                        <a href="/plantillas" class="editar__returnhome">
                             <i alt="return-home" class="editar__menuicons editar__menuicons__bloque bi bi-house"></i>
                         </a>
                     </button>
@@ -71,7 +71,19 @@
                 </div>
             </section>
 
+
             <section class="editar__plantilla__section col-8">
+                <% if (error) { %>
+                </br></br>
+                    <center><div>
+                        <p style="color: white;">
+                            <%= mensaje %>
+                        </p>
+                        </br>
+                        <a href="/plantillas" class="btn btn-dark btn-block">regresar a mis plantillas</a>
+                    </div></center>
+                    <% } else { %>
+                
                 <h5 class="editar__titulo">Título</h5>
                     <!-- Seccion de agregar seccion -->
                     <div class="menu__agregarplantilla plantilla__agregar">
@@ -81,6 +93,7 @@
                             </div>
                         </section>
                     </div>
+                <% } %>
             </section>
         </section>
 
