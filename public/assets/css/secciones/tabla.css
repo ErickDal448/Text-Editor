@@ -104,6 +104,7 @@ table input:focus {
 
 .celdaClickNull{
     background: white;
+    height: 100%;
 }
 
 /* diseño de las subfilas y subcolumnas */
@@ -130,6 +131,10 @@ table input:focus {
     border-left: none;
     border-right: none;
     border-bottom: none;
+}
+
+.tabla-anidadaCols tr{
+    height: 100%;
 }
 
 .tabla-anidadaCols td {
@@ -161,14 +166,15 @@ td.celda-anidada {
 }
 
 textarea {
-    resize: vertical;
+    resize: both;
     white-space:normal;
-    overflow: auto;
-    width: 100%;
-    border: none;
+    overflow: hidden;
+    max-width: 100%;
+    border: 1px solid rgb(233, 228, 228);
     height: auto;
-    transition: 0.4s;
+    
 }
+
 .tabla__controles__filas-columnas{
     display: flex;
     flex-wrap: wrap;
@@ -231,7 +237,7 @@ textarea {
   }
 
   .celda-ajustada{
-    max-width: 1rem;
+    max-width: 3rem;
   }
 
   td{
@@ -239,4 +245,12 @@ textarea {
     border-color: rgb(204, 204, 204);
     background-color: white;
     max-width: 3rem;
+    width: 10%;  
   }
+
+  .table>tr>td>*{
+    background-color: none;
+    padding: 0px;
+  }
+
+  

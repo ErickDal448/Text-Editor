@@ -1,0 +1,81 @@
+<%- include("templates/cabecera", {tituloWeb: 'inicio'}) %>
+    <body>
+
+        <section class="index__MenuCrearEditar">
+            <section class="index__secMenuPlantilla"  id="index__MenuCrear">
+                <div class="card card__ConfPlantilla" id="card__ConfPlantilla">
+                    <div class="card-body">
+
+                        <% if (error) { %>
+                            <p><%= mensaje  %></p>
+                        <% } else { %>
+                             
+                        <h5 class="card-title">Abrir plantilla como:</h5>
+
+                            <div style="display: flex; align-items: center; justify-content: center;">
+                                <button class="btn btn-secondary btn-lg btnRol1" data-rol="master">Para editar</button>
+                                <button class="btn btn-secondary btn-lg btnRol2" data-rol="printer">Para impresión</button>
+                            </div>
+
+                            <center><div style="margin-top: 35px;">
+                                <a href="/plantillas" class="btn btn-primary btn__plantilla" data-id="<%= Plantillas.id %>">Ir a mis plantillas</a>
+                            </div></center>
+                        <% } %>
+
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <script>
+            const btnPlantilla = document.querySelector('.btn__plantilla');
+            const btnEdit = document.querySelector('.btnEdit');
+            const id = btnPlantilla.dataset.id;
+
+            const btnMaster = document.querySelector('.btnRol1');
+            
+            btnMaster.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                
+                const rol = btnMaster.dataset.rol;
+                $.ajax({
+                    url: "/plantillas/mostrar/" + id,
+                    type: "PUT",
+                    data: { rol: rol }, // Envia el contenido HTML en la solicitud PUT.
+                    success: function(response) {
+                        console.log(response);
+                        window.location.href = '/plantillas/' + id;
+                    }
+                });
+            })
+            const btnPrinter = document.querySelector('.btnRol2');
+            
+            btnPrinter.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                
+                const rol = btnPrinter.dataset.rol;
+                $.ajax({
+                    url: "/plantillas/mostrar/" + id,
+                    type: "PUT",
+                    data: { rol: rol }, // Envia el contenido HTML en la solicitud PUT.
+                    success: function(response) {
+                        console.log(response);
+                        window.location.href = '/plantillas/' + id;
+                    }
+                });
+            })
+
+            const menuEditar = document.querySelector("#index__MenuCrear");
+            const cardConfPlantilla = document.querySelector("#card__ConfPlantilla");
+             // Agregar un controlador de eventos para el evento click en la sección index__MenuCrear
+             menuEditar.addEventListener('click', (event) => {
+                // Si el elemento que se hizo clic no es el div card__ConfPlantilla ni uno de sus hijos
+                if (!cardConfPlantilla.contains(event.target)) {
+                    // Cambiar el display de la sección index__MenuCrear a none
+                    window.location.href = '/plantillas';
+                }
+            });
+        </script>
+<%- include("templates/footer") %>

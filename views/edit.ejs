@@ -1,0 +1,118 @@
+<%- include("templates/cabecera", {tituloWeb: 'inicio'}) %>
+    <body>
+
+        <section class="index__MenuCrearEditar">
+            <section class="index__secMenuPlantilla"  id="index__MenuCrear">
+                <div class="card card__ConfPlantilla" id="card__ConfPlantilla">
+                    <div class="card-body">
+
+                        <% if (error) { %>
+                            <p><%= mensaje  %></p>
+                        <% } else { %>
+                             
+                        <h5 class="card-title">Edición de Plantilla</h5>
+                        <form id="FormEditar" data-id="<%= Plantillas.id %>">
+                            <div class="input-group mb-3" style="margin-top: 15px;">
+                                <input style="display: none" class="pId"></input>
+                                <span class="input-group-text" id="inputGroup-sizing-default">Título:</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" id="tituloInput" aria-describedby="inputGroup-sizing-default" maxlength="30" minlength="1" name="titulo" value="<%= Plantillas.titulo %>">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Descripción:</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" id="descripcionInput" aria-describedby="inputGroup-sizing-default" maxlength="50" minlength="1" name="descripcion" value="<%= Plantillas.descripcion %>">
+                            </div>
+                            <center><div style="margin-top: 35px;">
+                            <button type="submit" class="btn btn-primary btn__plantilla btnEdit" data-id="<%= Plantillas.id %>">Editar la Plantilla</button>
+                            <button class="btnDeletePlantilla btn btn__plantilla" id="btnDltPlantilla" data-id="<%= Plantillas.id %>"><i style="color: rgb(231, 218, 218);" class="bi bi-trash3"></i></button>
+                            </div></center>
+                        </form>
+                        <% } %>
+
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <script>
+            const btnEliminar = document.querySelector('#btnDltPlantilla');
+            const btnEdit = document.querySelector('.btnEdit');
+  
+            btnEliminar.addEventListener('click', async(e) => {
+                e.preventDefault();
+                
+                console.log(btnEliminar.dataset.id)
+                const id = btnEliminar.dataset.id;
+
+                // Muestra un cuadro de diálogo de confirmación.
+                if (!confirm("¿Estás seguro de que quieres eliminar esta plantilla?")) {
+                    window.location.href = `/plantillas/editar/${id}`;
+                    return; // Si el usuario hace clic en Cancelar, sale de la función.
+                }
+
+                try{
+                    const data = await fetch(`/plantillas/editar/${id}`, {
+                        method: 'delete'
+                    })
+                    const res = await data.json()
+                    if(res.estado){
+                        window.location.href = '/plantillas'
+                    }
+                    else{
+                        console.log(res)
+                    }
+                }
+                catch (error){
+                    console.log(error);
+                }
+            })
+
+
+
+            const formulario = document.querySelector('#FormEditar');
+            
+            formulario.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const titulo = formulario.elements['titulo'].value;
+                const descripcion = formulario.elements['descripcion'].value;
+                const id = btnEdit.dataset.id;
+
+                // Comprueba si los campos están vacíos.
+                if (!titulo || !descripcion) {
+                    alert("Por favor, rellena todos los campos.");
+                    return; // Sale de la función.
+                }
+                
+                try {
+                    const data = await fetch(`/plantillas/editar/${id}`, {
+                        method: 'put',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({titulo, descripcion})
+                        
+                    })
+                    const res = await data.json();
+                    if(res.estado){
+                        window.location.href = '/plantillas'
+                    }
+                    else{
+                        console.log(res)
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            })
+
+            const menuEditar = document.querySelector("#index__MenuCrear");
+            const cardConfPlantilla = document.querySelector("#card__ConfPlantilla");
+             // Agregar un controlador de eventos para el evento click en la sección index__MenuCrear
+             menuEditar.addEventListener('click', (event) => {
+                // Si el elemento que se hizo clic no es el div card__ConfPlantilla ni uno de sus hijos
+                if (!cardConfPlantilla.contains(event.target)) {
+                    // Cambiar el display de la sección index__MenuCrear a none
+                    window.location.href = '/plantillas';
+                }
+            });
+        </script>
+<%- include("templates/footer") %>

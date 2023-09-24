@@ -84,7 +84,6 @@ BtnTable.addEventListener("click", () => {
         editor.appendChild(t);
       
   
-        añadirDetectoresEventos();
       let small  = document.createElement("small")
       small.innerHTML = "Fuente:"
       editor.appendChild(small)
@@ -131,8 +130,8 @@ divContenedor.addEventListener("mousedown", function(e) {
   
       // Mostrar el menú personalizado en la posición del cursor
       menu.style.display = "flex";
-      menu.style.left = `${e.clientX}px`;
-      menu.style.top = `${e.clientY}px`;
+      menu.style.left = `${e.pageX}px`;
+      menu.style.top = `${e.pageY}px`;
   
       if (e.target.classList.contains("SubFila0") || e.target.classList.contains("SubFila1")) {
         // Mostrar el submenú personalizado
@@ -216,8 +215,8 @@ divContenedor.addEventListener("mousedown", function(e) {
 
         // Mostrar el menú personalizado en la posición del cursor
         menu.style.display = "flex";
-        menu.style.left = `${e.clientX}px`;
-        menu.style.top = `${e.clientY}px`;
+        menu.style.left = `${e.pageX}px`;
+        menu.style.top = `${e.pageY}px`;
       });
 
       // Agregar un controlador de eventos contextmenu a cada td anidado
@@ -229,12 +228,11 @@ divContenedor.addEventListener("mousedown", function(e) {
 
           // Almacenar una referencia al elemento td anidado en el que se hizo clic derecho
           tdSeleccionado = tdAnidado;
-          console.log(tdSeleccionado);
 
           // Mostrar el menú personalizado en la posición del cursor
           menu.style.display = "flex";
-          menu.style.left = `${e.clientX}px`;
-          menu.style.top = `${e.clientY}px`;
+          menu.style.left = `${e.pageX}px`;
+          menu.style.top = `${e.pageY}px`;
 
            // Detener la propagación del evento
             e.stopPropagation();
@@ -253,9 +251,9 @@ function handleClick() {
     } else {
       tdSeleccionado.style.background = "black";
       tdSeleccionado.setAttribute("contenteditable", "false");
+      tdSeleccionado.textContent = "";
     }
     
-    console.log(tdSeleccionado);
 
   // Ocultar el menú personalizado después de hacer clic en el botón
   menu.style.display = "none";
@@ -273,7 +271,6 @@ function ajustarAlturaFila(fila) {
 }
 
 if (tds) {
-  console.log("si")
   tds.forEach(td => {
     td.addEventListener('input', () => {
       ajustarAlturaFila(td.parentNode);
@@ -303,7 +300,6 @@ document.addEventListener("DOMContentLoaded", function() {
       // ---------------- //
 
   function SubRowMake(){
-    console.log(tdSeleccionado);
     Stabla = tdSeleccionado.closest("div > table");
       //funcion de hacer subfilas en columna A
         function agregarSubfila() {
@@ -317,13 +313,12 @@ document.addEventListener("DOMContentLoaded", function() {
           // Buscar el elemento td en el árbol DOM ascendente desde el elemento en el que se hizo clic
           let tdPadre = tdSeleccionado.closest("tr > td");
           let indiceFila = tdPadre.closest("tr");
-          console.log(indiceFila)
           let numfila = indiceFila.rowIndex + contBool;
            // Obtener la cantidad de celdas en la primera fila
           let columnas = indiceFila.cells.length;
 
           // Mostrar el índice de la fila
-          console.log("Número de fila:", numfila);
+          //console.log("Número de fila:", numfila);
         
           let hilera = Stabla.rows[numfila];
     
@@ -382,7 +377,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             
         // Mostrar el índice de la columna
-        console.log("Índice de columna:", indiceColumna);
+        //console.log("Índice de columna:", indiceColumna);
         let numcolumna = indiceColumna;
         // Buscar el elemento tr más cercano en el árbol DOM ascendente desde el elemento en el que se hizo clic
         let indiceFila = tdSeleccionado.closest("tr");
@@ -396,8 +391,6 @@ document.addEventListener("DOMContentLoaded", function() {
         // Obtener la cantidad de celdas en la fila seleccionada
         let Tcolumnas = filaSeleccionada.cells.length;
 
-        // Mostrar la cantidad de columnas
-        console.log("Cantidad de columnas:", Tcolumnas);
     
         // Verificar si la columna es "0" o "1"
         if (numcolumna == 0 || numcolumna == 1) {
@@ -410,7 +403,6 @@ document.addEventListener("DOMContentLoaded", function() {
           // Recorrer cada celda de la fila existente
           for (var i = 1; i < Tcolumnas; i++) {
             var celdaExistente = filaSeleccionada.cells[i];
-            console.log(celdaExistente);
             celdaExistente.classList.add("celda-ajustada", "CelRow", "backCells"); // Agregar una clase a la celda que contiene una tabla anidada
     
             // Crear una tabla anidada dentro de la celda existente
@@ -480,7 +472,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Si no quedan celdas "secondCells", volver al estado original
             if (secondCells.length === 0 && i != 0) {
-              console.log("si entro")
               // Eliminar todas las clases existentes
               celda.className = '';
             
@@ -505,7 +496,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
 // Agregar un controlador de eventos click al botón "Agregar Fila" del menú personalizado
-menu.querySelector("button:nth-of-type(2)").addEventListener("click", function() {
+menu.querySelector(".addRow").addEventListener("click", function() {
   // Verificar si hay una tabla seleccionada
   if (tablaSeleccionada) {
     // Agregar una nueva fila a la tabla seleccionada
@@ -528,7 +519,7 @@ menu.querySelector("button:nth-of-type(2)").addEventListener("click", function()
 });
 
 // Agregar un controlador de eventos click al botón "Agregar Columna" del menú personalizado
-menu.querySelector("button:nth-of-type(3)").addEventListener("click", function() {
+menu.querySelector(".addCol").addEventListener("click", function() {
   // Verificar si hay una tabla seleccionada
   if (tablaSeleccionada) {
     // Obtener todas las filas de la tabla seleccionada
@@ -548,7 +539,7 @@ menu.querySelector("button:nth-of-type(3)").addEventListener("click", function()
 });
 
 // Agregar un controlador de eventos click al botón "Eliminar Fila" del menú personalizado
-menu.querySelector("button:nth-of-type(4)").addEventListener("click", function() {
+menu.querySelector(".delRow").addEventListener("click", function() {
   // Verificar si hay una tabla seleccionada
   if (tablaSeleccionada) {
     // Eliminar la última fila de la tabla seleccionada
@@ -562,7 +553,7 @@ menu.querySelector("button:nth-of-type(4)").addEventListener("click", function()
 });
 
 // Agregar un controlador de eventos click al botón "Eliminar Columna" del menú personalizado
-menu.querySelector("button:nth-of-type(5)").addEventListener("click", function() {
+menu.querySelector(".delCol").addEventListener("click", function() {
   // Verificar si hay una tabla seleccionada
   if (tablaSeleccionada) {
     // Obtener todas las filas de la tabla seleccionada
@@ -613,7 +604,6 @@ function SubColMake() {
 function agregarSubcolumnas(celda, inicio) {
   // Obtener la tabla que contiene la celda
   let tabla = celda.parentNode.parentNode;
-  console.log(tabla);
 
   // Obtener todas las filas de la tabla
   let filas = tabla.querySelectorAll(".celdaClickNull");
@@ -628,7 +618,6 @@ function agregarSubcolumnas(celda, inicio) {
 
     // Comprobar si celdaActual es undefined
     if (celdaActual) {
-      console.log(celdaActual);
       // Comprobar si la celda ya ha sido procesada
       if (celdaActual.classList.contains('ColsProcess')) {
         let subTabla = celdaActual.querySelector(".tabla-anidadaCols");
@@ -687,7 +676,6 @@ function agregarSubcolumnas(celda, inicio) {
         celdaActual.innerHTML = '';
         celdaActual.appendChild(subTabla);
       }
-      añadirDetectoresEventos();
     }
   }
 }
@@ -772,35 +760,45 @@ function eliminarSubcolumna(celda) {
   }
 }
 
-
-
-// Esta es la función que añade los detectores de eventos a las celdas
-function añadirDetectoresEventos() {
-  let celdas = document.querySelectorAll('.celdaClickNull');
-  for (let i = 0; i < celdas.length; i++) {
-    celdas[i].addEventListener('input', ajustarAlturaSubtabla);
-  }
-}
-function ajustarAlturaSubtabla() {
-  // Obtener todas las celdas de la tabla
-  let celdas = document.querySelectorAll('.celdaClickNull');
-  console.log("sisiisis")
-  // Recorrer todas las celdas
-  for (let i = 0; i < celdas.length; i++) {
-    // Obtener la subtabla dentro de la celda
-    let subtabla = celdas[i].querySelector('table');
-
-    // Si la celda contiene una subtabla
-    if (subtabla) {
-      // Ajustar la altura de la subtabla para que coincida con la de la celda
-      subtabla.style.height = celdas[i].offsetHeight + 'px';
+divSave.addEventListener("click", () => {
+  let editor = document.getElementById('editor'); // Asegúrate de reemplazar 'editor' con el id correcto de tu div
+  let celdas = editor.querySelectorAll('td.celdaClickNull');
+  console.log(celdas);
+  celdas.forEach((celda) => {
+    celda.style.padding = '0px';
+    let tablaAnidada = celda.querySelector('.tabla-anidadaCols');
+    
+    if (tablaAnidada) {
+      console.log("calc(" + celda.offsetHeight + 'px' + "- 1rem)");
+      tablaAnidada.style.height = "calc(" + celda.offsetHeight + 'px' + " - 0.5rem)";
     }
-  }
-}
+  });
+})
 
-// Llamar a la función cuando la página se carga o se redimensiona
-window.onload = ajustarAlturaSubtabla;
-window.onresize = ajustarAlturaSubtabla;
+
+// // Esta es la función que añade los detectores de eventos a las celdas
+// function añadirDetectoresEventos() {
+//   let celdas = document.querySelectorAll('.celdaClickNull');
+//   for (let i = 0; i < celdas.length; i++) {
+//     celdas[i].addEventListener('input', ajustarAlturaSubtabla);
+//   }
+// }
+// function ajustarAlturaSubtabla() {
+//   // Obtener todas las celdas de la tabla
+//   let celdas = document.querySelectorAll('.celdaClickNull');
+//   // Recorrer todas las celdas
+//   for (let i = 0; i < celdas.length; i++) {
+//     // Obtener la subtabla dentro de la celda
+//     let subtabla = celdas[i].querySelector('table');
+
+//     // Si la celda contiene una subtabla
+//     if (subtabla) {
+//       // Ajustar la altura de la subtabla para que coincida con la de la celda
+//       subtabla.style.height = celdas[i].offsetHeight + 'px';
+//     }
+//   }
+// }
+
 
 // // -------------------- //
 // // ELIMINAR SUBCOLUMNAS //

@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 
 require('dotenv').config();
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 //Conexión a base de datos
 const mongoose = require('mongoose');

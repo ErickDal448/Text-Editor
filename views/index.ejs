@@ -1,5 +1,69 @@
-<%- include("templates/cabecera", {tituloWeb: 'inicio'}) %>
+<%- include("templates/cabecera", {tituloWeb: 'inicio'}) %>    
     <body>
+        <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
+        <script src="https://accounts.google.com/gsi/client" async></script>
+        <meta name="google-signin-client_id" content="405106262587-j3fn26erderrr875soqkgkbd08g91rig.apps.googleusercontent.com">
+        
+       <!-- Sign In With Google button with HTML data attributes API -->
+        <div id="g_id_onload"
+        data-client_id="405106262587-j3fn26erderrr875soqkgkbd08g91rig.apps.googleusercontent.com"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-callback="handleCredentialResponse"
+        data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin"
+        data-type="standard"
+        data-shape="rectangular"
+        data-theme="outline"
+        data-text="signin_with"
+        data-size="large"
+        data-logo_alignment="left">
+        </div>
+        <script>
+            var express = require('express');
+            var cors = require('cors');
+            var app = express();
+
+            app.use(cors());
+
+            app.get('/api', function (req, res, next) {
+            res.json({msg: 'Este es un mensaje CORS habilitado!'});
+            });
+
+            app.listen(80, function () {
+            console.log('CORS-enabled web server listening on port 80');
+            });
+
+            function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            }
+
+            function handleCredentialResponse(response) {
+            // decodeJwtResponse() es una función personalizada definida por ti
+            // para decodificar la respuesta de las credenciales.
+            const responsePayload = decodeJwtResponse(response.credential);
+            console.log("ID: " + responsePayload.sub);
+            console.log('Nombre completo: ' + responsePayload.name);
+            console.log('Nombre: ' + responsePayload.given_name);
+            console.log('Apellido: ' + responsePayload.family_name);
+            console.log("URL de la imagen: " + responsePayload.picture);
+            console.log("Correo electrónico: " + responsePayload.email);
+            }
+
+            window.handleCredentialResponse = function(response) {
+            // Aquí puedes manejar la respuesta del inicio de sesión
+            console.log(response);
+            };
+        </script>
+         
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+
         <section class="index__crear">
                 <h2 style="font-weight: bold; font-size: 3rem;">Crear Plantilla</h2>
                 <a class="index__link__crear" style="display: flex; flex-direction: column; align-items: center;">
@@ -11,16 +75,20 @@
         <section class="index__FondoPlantillas">
             <div class="divMisPlantillas">
                 <h3 class="index__txtFondoPlantillas">Mis Plantillas</h3>
-                <div class="divRegistro-inicio">
-                    <span class="index__txtFondoPlantillas"><a href="">Registrar</a> / <a href="">Iniciar Sesión</a></span>
-                </div>
-                <div class="divPerfil">
-                    <span class="index__txtFondoPlantillas txtPerfilName"><%= nombreCuenta %></span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle iconPerfil" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                    </svg>
-                </div>
+
+                <% if (nombreCuenta.length > 0) { %>
+                    <div class="divPerfil">
+                        <span class="index__txtFondoPlantillas txtPerfilName"><%= nombreCuenta %></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle iconPerfil" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                        </svg>
+                    </div>
+                <% } else { %>
+                    <div class="divRegistro-inicio">
+                        <span class="index__txtFondoPlantillas"><a href="">Registrar</a> / <a href="">Iniciar Sesión</a></span>
+                    </div>
+                <% } %>
             </div>
 
             <section class="index__plantillas">
@@ -31,8 +99,8 @@
                             <p class="card-title"><%= element.titulo %></p>
                             <p class="card-text"><%= element.descripcion %></p>
                             <div style="display: flex;">  
-                                <a href="plantillas/<%= element.id %>" class="btn btn-primary btn__plantilla">Ir a la plantilla</a>
-                                <button class="btnDeletePlantilla" id="btnDltPlantilla"  data-id="<%= element.id %>"><i style="color: rgb(231, 218, 218);" class="bi bi-trash3"></i></button>
+                                <a href="plantillas/mostrar/<%= element.id %>" class="btn btn-primary btn__plantilla">Ir a la plantilla</a>
+                                <a href="plantillas/editar/<%= element.id %>" class="btnConfPlantilla btn btn__plantilla" id="btnConfPlantilla"><i class="bi bi-gear-fill"></i></a>
                             </div>
                             </div>
                         </div>
@@ -57,10 +125,25 @@
                                 <span class="input-group-text" id="inputGroup-sizing-default">Descripción:</span>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" maxlength="50" minlength="1" name="descripcion">
                             </div>
-                            <center><button type="submit" class="btn btn-primary btn__plantilla" style="margin-top: 35px;">Crear Plantilla</button></center>
+                            <center><button type="submit" class="btn btn-primary btn__plantilla" id="btnAddPlantilla" style="margin-top: 35px;">Crear Plantilla</button></center>
                         </form>
                     </div>
                 </div>
             </section>
         </section>
+
+        <script>
+            const btnAddPlantilla = document.querySelector("#btnAddPlantilla");
+            btnAddPlantilla.addEventListener('click', (e) => {
+                const titulo = document.querySelector('input[name="titulo"]').value;
+                const descripcion = document.querySelector('input[name="descripcion"]').value;
+
+                // Comprueba si los campos están vacíos.
+                if (!titulo || !descripcion) {
+                    alert("Por favor, rellena todos los campos.");
+                    e.preventDefault(); // Evita que se envíe el formulario.
+                }
+            })
+
+        </script>
 <%- include("templates/footer") %>
