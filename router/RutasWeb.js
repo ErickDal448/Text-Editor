@@ -47,6 +47,7 @@ router.get('/:id', async(req,res) => {
             Plantillas: plantillasDB,
             texto: plantillasDB.texto,
             titulo: plantillasDB.titulo,
+            rol: plantillasDB.rol,
             id: id,
             error: false
         })
@@ -193,6 +194,5 @@ router.put('/mostrar/:id', async (req, res) => {
         })
     }
 })
-
 
 module.exports = router;

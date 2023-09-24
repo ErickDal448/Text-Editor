@@ -1,0 +1,21 @@
+<%- include("templates/cabecera", {tituloWeb: 'Imprimir'}) %>
+    <body>
+        <script>
+            // Recupera el contenido del div de localStorage
+            var contenido = localStorage.getItem('contenido');
+    
+            // Imprime el contenido
+            console.log(contenido);
+    
+            // Envía una solicitud POST a '/imprimir' con el contenido
+            $.ajax({
+                    url: "/plantillas/imprimir",
+                    type: "POST",
+                    data: { contenido: contenido }, // Envia el contenido HTML en la solicitud PUT.
+                    success: function(response) {
+                        console.log(response);
+                    }
+                });
+        </script>
+    </body>
+<%- include("templates/footer") %>

@@ -14,68 +14,88 @@
                 </div>
                 <input type="file" id="upload" hidden/>
                 <div class="editar__menuiconos__plantillas">
-                    <p class="editar__menusecciones">Edición de texto</p>
-                    <section class="SectionsBtns">
-                        <button id="paleta" class="jscolor {valueElement:null, value:'3c8dbc'}"></button>
-
-                        <select type="text" id="inputFontSize" onchange="alterFont(this.value)" >
-                            <option value="2">10 pt</option>
-                            <option value="3">12 pt</option>
-                            <option value="4">14 pt</option>
-                            <option value="6">16 pt</option>
-                            <option value="7">18 pt</option>
-                        </select>
-                    </section>
-                    <section class="SectionsBtns">
-                        <button class="btnJustifyLeft BtnTextEditor" onclick="applyCommand('justifyLeft')"><i class="bi bi-text-left"></i></button>
-                        <button class="btnCenter BtnTextEditor" onclick="applyCommand('justifyCenter')"><i class="bi bi-text-center"></i></button>
-                        <button class="btnJustifyRight BtnTextEditor" onclick="applyCommand('justifyRight')" ><i class="bi bi-text-right"></i></button>
-                        <button class="btnJustify BtnTextEditor" onclick="applyCommand('justifyFull')" ><i class="bi bi-justify"></i></button>
-                    </section>
-                    
-                    <section class="SectionsBtns">
-                        <button class="btnBold BtnTextEditor" onclick="applyCommand('bold')"><i class="bi bi-type-bold"></i></button>
-                        <button class="btnItalic BtnTextEditor" onclick="applyCommand('italic')"><i class="bi bi-type-italic"></i></button>
-                        <button class="btnStrike BtnTextEditor" onclick="applyCommand('strikeThrough')"><i class="bi bi-type-strikethrough"></i></button>
-                        <button class="btnUnderline BtnTextEditor" onclick="applyCommand('underline')"><i class="bi bi-type-underline"></i></button>
-                    </section>
-
-                    <section class="SectionsBtns">
-                        <button class="btnOutdent BtnTextEditor" onclick="applyCommand('outdent')"><i class="bi bi-text-indent-right"></i></button>
-                        <button class="btnIndent BtnTextEditor" onclick="applyCommand('indent')"><i class=" bi bi-text-indent-left"></i></button>    
-                    </section>
-                    
-                    <section class="SectionsBtns">
-                        <button id="fontColor" class="btnFontColor BtnTextEditor"><i class="bi bi-fonts" ></i></button>
-                        <button id="backColor" class="btnBackColor BtnTextEditor"><i class="bi bi-brush" ></i></button>
-                    </section>
-
-                    <p class="editar__menusecciones">Acciones e insertar</p>
-
-                    <section class="SectionsBtns">
-                        <button class="btnRedo BtnTextEditor" onclick="applyCommand('redo')"><i class="bi bi-arrow-clockwise" ></i></button>
-                        <button class="btnUndo BtnTextEditor" onclick="applyCommand('undo')"><i class="bi bi-arrow-counterclockwise"></i></button>
-                    </section>
-
-                    <section class="SectionsBtns">
-                        <label class="BtnTextEditor" for="upload"><i class="bi bi-image"></i></label>
-        
-                        <i class="bi bi-table BtnTextEditor"></i>
-                    </section>
-
-                    <section class="SectionsBtns">
-                        <button class=" BtnTextEditor" id="btnDate"><i class="bi bi-calendar-plus"></i></button>
-                        <button class=" BtnTextEditor" id="btnText"><i class="bi bi-input-cursor-text"></i></button>
-                        <button class=" BtnTextEditor" id="btnCheck"><i class="bi bi-check-square"></i></button>
-                    </section>
+                    <% if (rol == 'master') { %>
+                        <p class="editar__menusecciones">Edición de texto</p>
+                        <section class="SectionsBtns">
+                            <button id="paleta" class="jscolor {valueElement:null, value:'3c8dbc'}"></button>
+    
+                            <select type="text" id="inputFontSize" onchange="alterFont(this.value)" >
+                                <option value="2">10 pt</option>
+                                <option value="3">12 pt</option>
+                                <option value="4">14 pt</option>
+                                <option value="6">16 pt</option>
+                                <option value="7">18 pt</option>
+                            </select>
+                        </section>
+                        <section class="SectionsBtns">
+                            <button class="btnJustifyLeft BtnTextEditor" onclick="applyCommand('justifyLeft')"><i class="bi bi-text-left"></i></button>
+                            <button class="btnCenter BtnTextEditor" onclick="applyCommand('justifyCenter')"><i class="bi bi-text-center"></i></button>
+                            <button class="btnJustifyRight BtnTextEditor" onclick="applyCommand('justifyRight')" ><i class="bi bi-text-right"></i></button>
+                            <button class="btnJustify BtnTextEditor" onclick="applyCommand('justifyFull')" ><i class="bi bi-justify"></i></button>
+                        </section>
+                        
+                        <section class="SectionsBtns">
+                            <button class="btnBold BtnTextEditor" onclick="applyCommand('bold')"><i class="bi bi-type-bold"></i></button>
+                            <button class="btnItalic BtnTextEditor" onclick="applyCommand('italic')"><i class="bi bi-type-italic"></i></button>
+                            <button class="btnStrike BtnTextEditor" onclick="applyCommand('strikeThrough')"><i class="bi bi-type-strikethrough"></i></button>
+                            <button class="btnUnderline BtnTextEditor" onclick="applyCommand('underline')"><i class="bi bi-type-underline"></i></button>
+                        </section>
+    
+                        <section class="SectionsBtns">
+                            <button class="btnOutdent BtnTextEditor" onclick="applyCommand('outdent')"><i class="bi bi-text-indent-right"></i></button>
+                            <button class="btnIndent BtnTextEditor" onclick="applyCommand('indent')"><i class=" bi bi-text-indent-left"></i></button>    
+                        </section>
+                        
+                        <section class="SectionsBtns">
+                            <button id="fontColor" class="btnFontColor BtnTextEditor"><i class="bi bi-fonts" ></i></button>
+                            <button id="backColor" class="btnBackColor BtnTextEditor"><i class="bi bi-brush" ></i></button>
+                        </section>
+    
+                        <p class="editar__menusecciones">Acciones e insertar</p>
+    
+                        <section class="SectionsBtns">
+                            <button class="btnRedo BtnTextEditor" onclick="applyCommand('redo')"><i class="bi bi-arrow-clockwise" ></i></button>
+                            <button class="btnUndo BtnTextEditor" onclick="applyCommand('undo')"><i class="bi bi-arrow-counterclockwise"></i></button>
+                        </section>
+    
+                        <section class="SectionsBtns">
+                            <label class="BtnTextEditor" for="upload"><i class="bi bi-image"></i></label>
+            
+                            <i class="bi bi-table BtnTextEditor"></i>
+                        </section>
+    
+                        <section class="SectionsBtns">
+                            <button class=" BtnTextEditor" id="btnDate"><i class="bi bi-calendar-plus"></i></button>
+                            <button class=" BtnTextEditor" id="btnText"><i class="bi bi-input-cursor-text"></i></button>
+                            <button class=" BtnTextEditor" id="btnCheck"><i class="bi bi-check-square"></i></button>
+                        </section>
+                    <% } %>
+                    <% if (rol == 'printer') { %>
+                        <p class="editar__menusecciones">Insertar imagen</p>
+    
+                        <section class="SectionsBtns">
+                            <label class="BtnTextEditor" for="upload"><i class="bi bi-image"></i></label>
+                        </section>
+                        
+                    <% } %>
                 </div>
 
-                <div class="editar__menuicons__bloque div__MenuIzqBloque" id="divSave">
-                    <button class="BtnToggleMenu" id="btnSave" data-id="<%= id %>">
-                            <i alt="save" class="bi bi-save editar__menuicons editar__menuicons__bloque"></i>
-                    </button>
-                    <p class="editar__menunombre__bloque">Guardar</p>
-                </div>
+                <% if (rol == 'master') { %>
+                    <div class="editar__menuicons__bloque div__MenuIzqBloque" id="divSave">
+                        <button class="BtnToggleMenu" id="btnSave" data-id="<%= id %>">
+                                <i alt="save" class="bi bi-save editar__menuicons editar__menuicons__bloque"></i>
+                        </button>
+                        <p class="editar__menunombre__bloque">Guardar</p>
+                    </div>
+                <% } %>
+                <% if (rol == 'printer') { %>
+                    <div class="editar__menuicons__bloque div__MenuIzqBloque" id="divPrint">
+                        <button class="BtnToggleMenu" id="btnPrint" data-id="<%= id %>">
+                                <i alt="Print" class="bi bi-printer editar__menuicons editar__menuicons__bloque"></i>
+                        </button>
+                        <p class="editar__menunombre__bloque">Imprimir</p>
+                    </div>
+                <% } %>
             </section>
 
 
@@ -94,11 +114,20 @@
                 <h5 class="editar__titulo"> <%= titulo  %></h5>
                     <!-- Seccion de agregar seccion -->
                     <div class="menu__agregarplantilla plantilla__agregar">
-                        <section class="document">  
-                            <div id="editor" class="page" contenteditable="true">
-                                <%- texto %>
-                            </div>
-                        </section>
+                        <% if (rol == 'master') { %>
+                            <section class="document">  
+                                <div id="editor" class="page" contenteditable="true">
+                                    <%- texto %>
+                                </div>
+                            </section>
+                        <% } %>
+                        <% if (rol == 'printer') { %>
+                            <section class="document">  
+                                <div id="editor" class="page" contenteditable="false">
+                                    <%- texto %>
+                                </div>
+                            </section>
+                        <% } %>
                     </div>
                 <% } %>
             </section>
@@ -107,19 +136,21 @@
         </section>
 
         <div class="context-menu">
-            <button class="BtnNull">null</button>
-            <button class="btnBackCell">Color fondo</button>
-            <button class="btnFontCell">Color texto</button>
-            <button class="addRow">Agregar Fila</button>
-            <button class="addCol">Agregar Columna</button>
-            <button class="delRow">Eliminar Fila</button>
-            <button class="delCol">Eliminar Columna</button>
-            <button class="TableSubDivitionsRow makeSubRow">Hacer SubFila</button>
-            <button class="TableSubDivitionsCol makeSubCol">Hacer SubColumna</button>
-            <button class="TableSubDivitionsDelRow delSubRow">Eliminar SubFila</button>
-            <button class="TableSubDivitionsDelCol delSubCol">Eliminar SubColumna</button>
-            <button class="TableSubDivitions2Row addSubRow">Agregar Subfila</button>
-            <button class="TableSubDivitions2Col addSubCol">Agregar Subcolumna</button>
+            <% if (rol == 'master') { %>
+                <button class="BtnNull">null</button>
+                <button class="btnBackCell">Color fondo</button>
+                <button class="btnFontCell">Color texto</button>
+                <button class="addRow">Agregar Fila</button>
+                <button class="addCol">Agregar Columna</button>
+                <button class="delRow">Eliminar Fila</button>
+                <button class="delCol">Eliminar Columna</button>
+                <button class="TableSubDivitionsRow makeSubRow">Hacer SubFila</button>
+                <button class="TableSubDivitionsCol makeSubCol">Hacer SubColumna</button>
+                <button class="TableSubDivitionsDelRow delSubRow">Eliminar SubFila</button>
+                <button class="TableSubDivitionsDelCol delSubCol">Eliminar SubColumna</button>
+                <button class="TableSubDivitions2Row addSubRow">Agregar Subfila</button>
+                <button class="TableSubDivitions2Col addSubCol">Agregar Subcolumna</button>
+            <% } %>
         </div>
 
         <script>

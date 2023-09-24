@@ -102,4 +102,25 @@ function  textAreaDetect() {
     });
   });
 };
+divSave.addEventListener("click", () => {
+  let textareas = document.querySelectorAll('textarea');
+  textareas.forEach((textarea) => {
+    // Aquí puedes agregar el código para ajustar el maxlength del textarea
+      // Por ejemplo:
+      let style = window.getComputedStyle(textarea);
+      let width = parseInt(style.width);
+      let height = parseInt(style.height);
+      let fontSize = parseInt(style.fontSize);
+      let lineHeight = parseFloat(style.lineHeight) / fontSize;
 
+      // Asume que cada carácter ocupa aproximadamente la misma cantidad de espacio que una 'm'
+      let charWidth = fontSize * 0.62;
+  
+      // Calcula el número de caracteres por línea y el número de líneas
+      let charsPerLine = Math.floor(width / charWidth);
+      let lines = Math.floor(height / (fontSize * lineHeight));
+
+      // Establece el maxlength en función del número de caracteres por línea y el número de líneas
+      textarea.maxLength = charsPerLine * lines;
+  })
+})

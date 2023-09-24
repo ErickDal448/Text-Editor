@@ -36,6 +36,7 @@ app.use(express.static(__dirname + "/public" ));
 // rutas web
 app.use('/plantillas', require('./router/RutasWeb'));
 
+
 app.use((req, res, next) => {
   res.status(404).render("404");
 })
